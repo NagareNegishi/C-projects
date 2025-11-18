@@ -1,6 +1,25 @@
 # study resources
 Notes/
 Exercises/
+Ceedling example/
 
 # VS Code settings (personal configuration)
 .vscode/
+.idea/
+*.code-workspace
+
+# Ceedling build artifacts
+build/
+*.log
+*.xml
+
+# Ceedling vendor libraries (can regenerate)
+vendor/
+
+# C/C++ compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.so
+*.a
