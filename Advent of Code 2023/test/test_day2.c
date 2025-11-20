@@ -21,3 +21,24 @@ void test_1(int max_r, int max_g, int max_b, int expected)
     );
     TEST_ASSERT_EQUAL(expected, round);
 }
+
+TEST_CASE(12, 13, 14, 8)
+TEST_CASE(20, 13, 14, 11)
+TEST_CASE(14, 13, 15, 12)
+TEST_CASE(20, 13, 15, 15)
+void test_2(int max_r, int max_g, int max_b, int expected)
+{
+    int total;
+    int result = get_sum_of_ID("test/day2.txt", &total, max_r, max_g, max_b);
+    TEST_ASSERT_EQUAL(expected, total);
+    TEST_ASSERT_EQUAL(0, result);
+}
+
+TEST_CASE(12, 13, 14, 0)
+void test_3(int max_r, int max_g, int max_b, int expected)
+{
+    int total;
+    int result = get_sum_of_ID("day2.txt", &total, max_r, max_g, max_b);
+    TEST_ASSERT_EQUAL(expected, total);
+    TEST_ASSERT_EQUAL(1, result);
+}
