@@ -198,9 +198,24 @@
   :exclude_setjmp_h:  false        # Don't use setjmp when running CMock. Note that this might result in late reporting or out-of-order failures.
 
 # Configuration options specific to Unity. 
+
+
+# :unity:
+#   :defines:
+#     - UNITY_EXCLUDE_FLOAT
+
 :unity:
-  :defines:
-    - UNITY_EXCLUDE_FLOAT
+  :use_param_tests: true   # <— this tells Unity/Ceedling to handle param tests
+
+:defines:
+  :test: # Help the compiler accept my TEST_CASE lines.
+    - TEST
+    - UNITY_SUPPORT_TEST_CASES # <— this makes TEST_CASE macro available
+  :test_preprocess: # Help Ceedling understand my TEST_CASE lines.
+    - TEST
+    - UNITY_SUPPORT_TEST_CASES
+
+
 
 # You can optionally have ceedling create environment variables for you before
 # performing the rest of its tasks.
