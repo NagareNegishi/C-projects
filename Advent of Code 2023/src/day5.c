@@ -19,16 +19,20 @@ int get_closest(const char* filename, long long* closest, const char* goal)
     char buffer[1000];
     if (fgets(buffer, sizeof(buffer), in) == NULL) {
         perror("Fail do not have first line.\n");
+        fclose(in);
         return 1;
     }
     int size;
     if (get_source_size(buffer, &size) == 0) {
         perror("get_source_size failed.\n");
+        fclose(in);
         return 1;
     }
     long long sources[size];
     if (get_source(buffer, size, sources) == 0){
         perror("get_source failed.\n");
+        fclose(in);
+        return 1;
     }
 
     // read categories and convert
@@ -135,12 +139,133 @@ int convert(FILE* in, long long* before, const int size) {
 }
 
 
+
+
+
+// part 2
 int main()
 {
     long long closest;
-    if (get_closest("input5.txt", &closest, "location") == 0){
+    if (get_closest_with_range("input5.txt", &closest, "location") == 0){
         printf("Closest is: %lld\n", closest);
     } else {
         perror("get_closest failed.\n");
     }
+}
+
+// part 1
+// int main()
+// {
+//     long long closest;
+//     if (get_closest("input5.txt", &closest, "location") == 0){
+//         printf("Closest is: %lld\n", closest);
+//     } else {
+//         perror("get_closest failed.\n");
+//     }
+// }
+
+
+//part 2 attempt 1, it works for small input but input5.txt is too large to handle
+// get the closest location
+int get_closest_with_range(const char* filename, long long* closest, const char* goal)
+{
+    *closest = LLONG_MAX;
+    FILE *in;
+    in = fopen(filename, "r");
+    if (in == NULL) {
+        perror("Fail to open file.\n");
+        return 1;
+    }
+
+    // get source sizes and sources
+    char buffer[1000];
+    if (fgets(buffer, sizeof(buffer), in) == NULL) {
+        perror("Fail do not have first line.\n");
+        fclose(in);
+        return 1;
+    }
+    long long size;
+    if (get_source_size_with_range(buffer, &size) == 0) {
+        perror("get_source_size failed.\n");
+        fclose(in);
+        return 1;
+    }
+    long long sources[size];
+    if (get_source_with_range(buffer, size, sources) == 0){
+        perror("get_source failed.\n");
+        fclose(in);
+        return 1;
+    }
+
+    // read categories and convert
+    int is_goal = 0;
+    fgets(buffer, sizeof(buffer), in); // skip empty line
+    while (!is_goal) {
+        int result = read_category(in, goal);
+        if (result == 0){
+            perror("read_category failed.\n");
+            return 1;
+        } else if (result == 2){
+            is_goal = 1;
+        }
+        if (convert(in, sources, size) == 0){
+            perror("convert failed.\n");
+            return 1;
+        }
+    }
+
+    // find closest
+    for (int i = 0; i < size; i++) {
+        if (sources[i] < *closest) {
+            *closest = sources[i];
+        }
+    }
+    if (fclose(in) != 0) {
+        perror("Fail to close file.\n");
+        return 1;
+    }
+    return 0;
+}
+
+// get size of source
+int get_source_size_with_range(const char* sources, long long* size) {
+    char *ptr = strchr(sources, ':');
+    *size = 0;
+    if (ptr == NULL) {
+        perror("':' not found.\n");
+        return 0;
+    }
+    ptr++;
+    int count;
+    long long start, range;
+    while (sscanf(ptr, " %lld %lld%n", &start, &range, &count) == 2) {
+        (*size)+= range;
+        ptr += count;
+    }
+    printf("Size with range: %lld\n", *size);
+    return 1;
+}
+
+// get size of source
+int get_source_with_range(const char* sources, long long size, long long* array) {
+    char *ptr = strchr(sources, ':');
+    if (ptr == NULL) {
+        perror("':' not found.\n");
+        return 0;
+    }
+    ptr++;
+
+    int count;
+    long long start, range;
+    long long *p = array;
+    while (p < array + size) {
+        if (sscanf(ptr, " %lld %lld%n", &start, &range, &count) != 2) {
+            break; // no more pair
+        }
+        for (long long i = 0; i < range; i++) {
+            *p++ = start + i;
+        }
+        ptr += count;
+    }
+    return 1;
 }

@@ -16,4 +16,17 @@ int read_category(FILE* in, const char* goal);
 // convert to next type
 int convert(FILE* in, long long* before, const int size);
 
+
+
+
+
+
+
+
+
+//part 2 attempt 1
+int get_closest_with_range(const char* filename, long long* closest, const char* goal);
+int get_source_size_with_range(const char* sources, long long* size);
+int get_source_with_range(const char* sources, long long size, long long* array);
+
 #endif
