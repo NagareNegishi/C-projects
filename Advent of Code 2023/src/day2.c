@@ -58,13 +58,13 @@ int is_possible(const char* line, const int max_r, const int max_g, const int ma
 }
 
 
-// int main(){
-//     int result = 0, *ptr;
-//     ptr = &result;
-//     if (get_sum_of_ID("input2.txt", ptr, 12, 13, 14) == 1){
-//         perror("Fail to open/close file\n");
-//         return 1;
-//     }
-//     printf("total is: %d\n", *ptr);
-//     return 0;
-// }
+int main(){
+    int result = 0, *ptr;
+    ptr = &result;
+    if (get_sum_of_ID("input2.txt", ptr, 12, 13, 14) == 1){
+        perror("Fail to open/close file\n");
+        return 1;
+    }
+    printf("total is: %d\n", *ptr);
+    return 0;
+}

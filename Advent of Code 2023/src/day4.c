@@ -99,6 +99,6 @@ int contains(int* array, const int size, const int target)
 
 int main(){
     int total;
-    get_total("day4.txt", &total);
+    get_total("input4.txt", &total);
     printf("total is %d\n",total);
 }

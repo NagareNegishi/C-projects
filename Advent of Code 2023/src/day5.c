@@ -135,12 +135,12 @@ int convert(FILE* in, long long* before, const int size) {
 }
 
 
-// int main()
-// {
-//     long long closest;
-//     if (get_closest("input5.txt", &closest, "location") == 0){
-//         printf("Closest is: %lld\n", closest);
-//     } else {
-//         perror("get_closest failed.\n");
-//     }
-// }
+int main()
+{
+    long long closest;
+    if (get_closest("input5.txt", &closest, "location") == 0){
+        printf("Closest is: %lld\n", closest);
+    } else {
+        perror("get_closest failed.\n");
+    }
+}

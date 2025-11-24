@@ -159,12 +159,12 @@ int check_surrounding(char* cursor, int num, int len, const int max_row, const i
     return 0;
 }
 
-// int main(){
-//     int sum;
-//     if (get_sum("input3.txt", &sum) == 1) {
-//         perror("get_sum failed.");
-//         return 1;
-//     }
-//     printf("The sum is %d\n", sum);
-//     return 0;
-// }
+int main(){
+    int sum;
+    if (get_sum("input3.txt", &sum) == 1) {
+        perror("get_sum failed.");
+        return 1;
+    }
+    printf("The sum is %d\n", sum);
+    return 0;
+}
