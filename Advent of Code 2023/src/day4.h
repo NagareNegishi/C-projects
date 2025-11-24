@@ -9,4 +9,9 @@ int check_card(char* card, int* total);
 void count_cols(const char* card, int* win_size, int* num_size);
 // 1 = true, 0 = false
 int contains(int* array, const int size, const int target);
+
+// part2
+int count_cards(const char* filename, int* total);
+int get_winning_count(char* card);
+
 #endif
