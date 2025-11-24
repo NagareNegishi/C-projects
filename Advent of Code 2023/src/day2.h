@@ -5,4 +5,7 @@ int get_sum_of_ID(const char* filename, int* result, const int max_r, const int 
 
 int is_possible(const char* line, const int max_r, const int max_g, const int max_b);
 
+int get_sum_of_power(const char* filename, int* result) ;
+int get_power(const char* line);
+
 #endif // DAY2_H
