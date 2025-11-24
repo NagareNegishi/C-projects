@@ -7,6 +7,12 @@ typedef struct {
     int ways;
 } Race;
 
+typedef struct {
+    long time;
+    long distance;
+    long ways;
+} LongRace;
+
 // read file and calculate result
 int analyse_races(const char* filename, int* result);
 
@@ -20,5 +26,9 @@ int read_Races(Race* races, const int size, const char* times, const char* dista
 void calculate_ways(Race* race);
 
 int close_file(FILE* in);
+
+int analyse_races_part2(const char* filename, int* result);
+void read_Races_part2(LongRace* race, const char* times, const char* distances);
+void calculate_ways_part2(LongRace* race);
 
 #endif

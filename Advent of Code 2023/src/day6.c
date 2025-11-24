@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "day6.h"
 
 int close_file(FILE* in){
@@ -10,6 +11,7 @@ int close_file(FILE* in){
     }
     return 1;
 }
+
 
 // read file and calculate result
 int analyse_races(const char* filename, int* result)
@@ -48,7 +50,6 @@ int analyse_races(const char* filename, int* result)
     Race *races = (Race*) calloc(size, sizeof(Race));
     if (races == NULL) {
         perror("Memory allocation failed.\n");
-        close_file(in);
         return 0;
     }
     if (read_Races(races, size, time_buffer, distance_buffer) == 0) {
@@ -123,9 +124,84 @@ void calculate_ways(Race* race){
     }
 }
 
+
+// read file and calculate result
+int analyse_races_part2(const char* filename, int* result)
+{
+    *result = 0;
+    FILE *in;
+    in = fopen(filename, "r");
+    if (in == NULL) {
+        perror("Fail to open file.\n");
+        return 0;
+    }
+    // read lines
+    char time_buffer[500];
+    if (fgets(time_buffer, sizeof(time_buffer), in) == NULL) {
+        perror("Fail to read input.\n");
+        close_file(in);
+        return 0;
+    }
+    char distance_buffer[500];
+    if (fgets(distance_buffer, sizeof(distance_buffer), in) == NULL) {
+        perror("Fail to read input.\n");
+        close_file(in);
+        return 0;
+    }
+    close_file(in);
+
+    // create Race
+    LongRace race = {0,0,0};
+    read_Races_part2(&race, time_buffer, distance_buffer);
+    calculate_ways_part2(&race);
+    *result = race.ways;
+    return 1;
+}
+
+// (int)log10(num) + 1 can tell digit number too
+// create Race from lines
+void read_Races_part2(LongRace* race, const char* times, const char* distances)
+{
+    // concatenate digits only then convert to long
+    char t_buffer[100];
+    char d_buffer[100];
+    int t_count = 0;
+    int d_count = 0;
+    for (int i = 0; times[i] != '\n'; i++) {
+        if (isdigit(times[i])) {
+            t_buffer[t_count] = times[i];
+            t_count++;
+        }
+    }
+    t_buffer[t_count] = '\0';
+    for (int i = 0; distances[i] != '\n'; i++) {
+        if (isdigit(distances[i])) {
+            d_buffer[d_count] = distances[i];
+            d_count++;
+        }
+    }
+    d_buffer[d_count] = '\0';
+    long time = atol(t_buffer);
+    long distance = atol(d_buffer);
+    race->time = time;
+    race->distance = distance;
+}
+
+// calculate wining ways
+void calculate_ways_part2(LongRace* race){
+    for (long t = 0; t <= race->time; t++) {
+        long time_remain = race->time - t;
+        long long dist = (long long)time_remain * t;
+        if (dist > race->distance) {
+            (race->ways)++;
+        }
+    }
+}
+
+
 int main() {
     int result;
-    if (analyse_races("input6.txt", &result) == 0) {
+    if (analyse_races_part2("input6.txt", &result) == 0) {
         perror("analyse_races Failed\n");
         return 1;
     }
