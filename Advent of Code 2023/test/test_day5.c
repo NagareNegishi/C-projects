@@ -17,7 +17,7 @@ void test_get_source_size(int index, int expected_size, int expected_result) {
         "seeds: 79 14 55 13 1 1 1 ,   1"
     };
     int size;
-    int result = get_source_size(test_strings[index], &size);
+    int result = get_source_size_v1(test_strings[index], &size);
     TEST_ASSERT_EQUAL(expected_size, size);
     TEST_ASSERT_EQUAL(expected_result, result);
 }
@@ -38,7 +38,7 @@ void test_get_source(int index, int size, int expected_result) {
     };
 
     long long sources[size];
-    int result = get_source(test_strings[index], size, sources);
+    int result = get_source_v1(test_strings[index], size, sources);
     TEST_ASSERT_EQUAL(expected_result, result);
     const int test_ints[] = {79, 14, 55, 13};
     if (index == 0) {

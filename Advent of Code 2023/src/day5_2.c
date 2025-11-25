@@ -225,13 +225,13 @@ Range* convert(FILE* in, Range* before, int* size)
 }
 
 
-// part 2
-int main()
-{
-    long long closest;
-    if (get_closest("input5.txt", &closest, "location") == 1){
-        printf("Closest is: %lld\n", closest);
-    } else {
-        perror("get_closest failed.\n");
-    }
-}
+// // part 2
+// int main()
+// {
+//     long long closest;
+//     if (get_closest("input5.txt", &closest, "location") == 1){
+//         printf("Closest is: %lld\n", closest);
+//     } else {
+//         perror("get_closest failed.\n");
+//     }
+// }

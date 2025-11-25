@@ -21,5 +21,4 @@ Range* convert(FILE* in, Range* before, int* size);
 // cleanup resources
 void cleanup(FILE* in, Range* list);
 
-
 #endif
