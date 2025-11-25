@@ -50,12 +50,12 @@ int get_closest(const char* filename, long long* closest, const char* goal)
         }
     }
 
-    // // find closest
-    // for (int i = 0; i < size; i++) {
-    //     if (sources[i] < *closest) {
-    //         *closest = sources[i];
-    //     }
-    // }
+    // find closest
+    for (int i = 0; i < size; i++) {
+        if (list[i].start < *closest) {
+            *closest = list[i].start;
+        }
+    }
     cleanup(in, list);
     return 1;
 }
@@ -123,7 +123,7 @@ int read_category(FILE* in, const char* goal){
  * @param size Pointer to the size of the Range list.
  * @return The converted Range list, or NULL on failure.
  */
-Range* convert(FILE* in, Range* before, int* size) 
+Range* convert(FILE* in, Range* before, int* size)
 {
     // track both unchanged ranges
     Range *unmapped = (Range*)malloc((*size) * sizeof(Range));
@@ -152,7 +152,7 @@ Range* convert(FILE* in, Range* before, int* size)
             long long range_end = range_start + unmapped[i].range - 1;
 
             // case no overlap
-            if (range_end < map_start && range_start > map_end) {
+            if (range_end < map_start || range_start > map_end) {
                 i++;
                 continue;
             }
@@ -208,25 +208,30 @@ Range* convert(FILE* in, Range* before, int* size)
                 unmapped_size++;
             }
         }
-
-
     }
-    // update original array
-    return abort;
+
+    // combine mapped and unmapped
+    Range *result = realloc(mapped, sizeof(Range) * (mapped_size + unmapped_size));
+    if (result == NULL) {
+        perror("realloc failed\n");
+        free(unmapped);
+        free(mapped);
+        return NULL;
+    }
+    memcpy(&result[mapped_size], unmapped, sizeof(Range) * unmapped_size);
+    *size = mapped_size + unmapped_size;
+    free(unmapped);
+    return result;
 }
-
-
-
 
 
 // part 2
 int main()
 {
     long long closest;
-    if (get_closest("input5.txt", &closest, "location") == 0){
+    if (get_closest("input5.txt", &closest, "location") == 1){
         printf("Closest is: %lld\n", closest);
     } else {
         perror("get_closest failed.\n");
     }
 }
-
