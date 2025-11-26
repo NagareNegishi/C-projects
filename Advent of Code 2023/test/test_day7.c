@@ -5,10 +5,11 @@
 
 
 void test_get_total(){
-    int total = 0;
-    int result = get_total("test/day7.txt", &total);
+    long long total = 0;
+    // int result = get_total("test/day7.txt", &total);
+    int result = get_total("src/input7.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_EQUAL(15, total);
+    TEST_ASSERT_EQUAL(6440, total);
     result = get_total("fake.txt", &total);
     TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_EQUAL(0, total);

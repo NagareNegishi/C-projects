@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 // determine the total winnings
-int get_total(const char* filename, int* total);
+int get_total(const char* filename, long long* total);
 
 Hand* populate_hands(FILE* in, int* size);
 
