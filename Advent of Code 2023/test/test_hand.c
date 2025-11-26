@@ -115,3 +115,16 @@ void test_compare_hand(const int index1, const int index2, int expected)
     else if (result > 0) result = 1;
     TEST_ASSERT_EQUAL(expected, result);
 }
+
+void test_get_winning_points()
+{
+    Hand test_hand = {
+        .hand = {TWO, THREE, FOUR, FIVE, SIX},
+        .bid = 100,
+        .rank = 3,
+        .type = HIGH_CARD,
+        .is_valid = true
+    };
+    long result = get_winning_points(&test_hand);
+    TEST_ASSERT_EQUAL(300, result);
+}

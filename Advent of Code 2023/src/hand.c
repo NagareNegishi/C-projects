@@ -128,3 +128,13 @@ int compare_hand(const void * hand1, const void * hand2){
     }
     return 0;
 }
+
+/**
+ * get the winning points for a hand type
+ * @param hand pointer to the Hand struct
+ * @return the winning points
+ */
+long get_winning_points(Hand* hand)
+{
+    return (long)hand->bid * hand->rank;
+}

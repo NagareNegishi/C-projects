@@ -68,4 +68,11 @@ Type evaluate_hand(Card* hand);
  */
 int compare_hand(const void * hand1, const void * hand2);
 
+/**
+ * get the winning points for a hand type
+ * @param hand pointer to the Hand struct
+ * @return the winning points
+ */
+long get_winning_points(Hand* hand);
+
 #endif // HAND_H
