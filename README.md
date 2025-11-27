@@ -4,6 +4,7 @@ A repository for brushing up on C programming skills with a focus on unit testin
 
 Testing practices using modern tools such as Ceedling, Cppcheck, Valgrind and other C testing frameworks.
 
+Documentation is minimal here, as the main goal is to practice many small programs quickly, and all practice are done without AI assistance.
 
 ## Contents
 
