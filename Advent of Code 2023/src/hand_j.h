@@ -57,9 +57,10 @@ Hand create_hand(const char* line);
 /**
  * evaluate the type of hand
  * @param hand pointer to the Card array
+ * @param jokers number of jokers in the hand
  * @return the evaluated Type
  */
-Type evaluate_hand(Card* hand);
+Type evaluate_hand(Card* hand, int jokers);
 
 /**
  * compare two Hand structs

@@ -1,5 +1,6 @@
 #include "unity.h"
-#include "hand.h"
+// #include "hand.h"
+#include "hand_j.h"
 #include "day7.h"
 #include <stdio.h>
 
@@ -8,6 +9,7 @@ void test_get_total(){
     long long total = 0;
     // int result = get_total("test/day7.txt", &total);
     int result = get_total("src/input7.txt", &total);
+    printf("Total: %lld\n", total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(6440, total);
     result = get_total("fake.txt", &total);

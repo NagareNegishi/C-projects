@@ -1,4 +1,5 @@
-#include "hand.h"
+// #include "hand.h"
+#include "hand_j.h"
 #include "day7.h"
 #include <stdio.h>
 #include <stdlib.h>

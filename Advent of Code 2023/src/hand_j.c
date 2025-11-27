@@ -81,89 +81,47 @@ Type evaluate_hand(Card* hand, int jokers){
     for (int i = 0; i < 5; i++) {
         counts[hand[i]]++;
     }
-    for (int i = 0; i < 13; i++) {
-        if (counts[i] == 5) {
-            return FIVE_OF_A_KIND;
+    int highest = 0;
+    int index = -1;
+    for (int i = 1; i < 13; i++) { // ignore JOKER
+        if (counts[i] > highest) {
+            highest = counts[i];
+            index = i;
         }
-        else if (counts[i] == 4) {
-            if (jokers > 0) {
-                return FIVE_OF_A_KIND;
-            }
-            return FOUR_OF_A_KIND;
+    }
+    int second = 0;
+    int second_index = -1;
+    for (int i = 1; i < 13; i++) { // ignore JOKER
+        if (counts[i] > second && i != index) {
+            second = counts[i];
+            second_index = i;
         }
-        else if (counts[i] == 3) {
-            // check for four or five of a kind
-            if (jokers == 2) { return FIVE_OF_A_KIND;}
-            else if (jokers == 1) { return FOUR_OF_A_KIND;}
-            // check for full house
-            for (int j = 0; j < 13; j++) {
-                if (j != i && counts[j] == 2) {
-                    return FULL_HOUSE;
-                }
-            }
-            return THREE_OF_A_KIND;
-        }
-        else if (counts[i] == 2) {
-            // check for four or five of a kind
-            if (jokers == 3) { return FIVE_OF_A_KIND;}
-            else if (jokers == 2) { return FOUR_OF_A_KIND;}
-            else if (jokers == 1) { // check for full house or three of a kind
-                for (int j = 0; j < 13; j++) {
-                    if (j != i && counts[j] == 2) {
-                        return FULL_HOUSE;
-                    }
-                    return THREE_OF_A_KIND;
-                }
-            }
-            else { // no jokers check for full house and two pair
-                for (int j = 0; j < 13; j++) {
-                    if (j != i && counts[j] == 3) {
-                        return FULL_HOUSE;
-                    }
-                    if (j != i && counts[j] == 2) {
-                        return TWO_PAIR;
-                    }
-                }
-            }
-        }
-        else {
-        // check for four or five of a kind
-        if (jokers == 4) { return FIVE_OF_A_KIND;}
-        else if (jokers == 3) { return FOUR_OF_A_KIND;}
-        else if (jokers == 2) { // check for full house or three of a kind
-            for (int j = 0; j < 13; j++) {
-                if (j != i && counts[j] == 3) {
-                    return FULL_HOUSE;
-                }
-                if (j != i && counts[j] == 2) {
-                    return FULL_HOUSE;
-                }
-                return THREE_OF_A_KIND;
-            }
-        }
-        else if (jokers == 1) {
-            // check for full house, two pair, or one pair
-            for (int j = 0; j < 13; j++) {
-                if (j != i && counts[j] == 3) {
-                    return FOUR_OF_A_KIND;
-                }
-                if (j != i && counts[j] == 2) {
-                    return THREE_OF_A_KIND;
-                }
-            }
-            return ONE_PAIR;
-        }
-        // check for full house and two pair
-        for (int j = 0; j < 13; j++) {
-            if (j != i && (counts[j] == 3  || (counts[j] == 2 && jokers > 0))) {
-                return FULL_HOUSE;
-            }
-            if (j != i && (counts[j] == 2 || (counts[j] == 1 && jokers > 0))) {
-                return TWO_PAIR;
-            }
-        }
-            return ONE_PAIR;
-        }
+    }
+
+    int best_possible = highest + jokers;
+    // Case FIVE_OF_A_KIND
+    if (best_possible >= 5) {
+        return FIVE_OF_A_KIND;
+    }
+    // Case FOUR_OF_A_KIND
+    else if (best_possible == 4) {
+        return FOUR_OF_A_KIND;
+    }
+    // Case FULL_HOUSE
+    else if (best_possible == 3 && second == 2) {
+        return FULL_HOUSE;
+    }
+    // Case THREE_OF_A_KIND
+    else if (best_possible == 3) {
+        return THREE_OF_A_KIND;
+    }
+    // Case TWO_PAIR
+    else if (highest == 2 && second == 2) {
+        return TWO_PAIR;
+    }
+    // Case ONE_PAIR
+    else if (best_possible == 2) {
+        return ONE_PAIR;
     }
     return HIGH_CARD;
 }
