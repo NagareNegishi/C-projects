@@ -35,3 +35,17 @@ Node create_node(const char* name){
     node.is_valid = true;
     return node;
 }
+
+
+/**
+ * Checks if the node's name ends with the specified character.
+ * @param node Pointer to the Node structure.
+ * @param c The character to check against the end of the node's name.
+ * @return true if the node's name ends with the character c, false otherwise.
+ */
+bool is_end_with(Node* node, const char c){
+    if (node == NULL || !node->is_valid) {
+        return false;
+    }
+    return node->name[2] == c;
+}

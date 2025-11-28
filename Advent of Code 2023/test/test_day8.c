@@ -3,7 +3,19 @@
 #include "node.h"
 
 
-// int count_steps(const char* filename, int* steps);
+void test_count_steps()
+{
+    int steps;
+    // int result = count_steps("test/day8.txt", &steps);
+    // int result = count_steps("src/input8.txt", &steps);
+    // int result = count_steps_v2("test/day8_2.txt", &steps);
+    int result = count_steps_v2("src/input8.txt", &steps);
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(6, steps);
+    result = count_steps("fake.txt", &steps);
+    TEST_ASSERT_EQUAL(1, result);
+}
+
 
 void test_populate_nodes()
 {
@@ -16,18 +28,18 @@ void test_populate_nodes()
     fgets(directions, sizeof(directions), in);
 
     Node nodes[17576] = {0};
-    Node start = {0};
-    Node goal = {0};
-    int result = populate_nodes(in, nodes, 17576, &start, &goal);
+    int start = -1;
+    int goal = -1;
+    int result = populate_nodes(in, nodes, &start, &goal);
     TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_TRUE(start.is_valid == true);
-    TEST_ASSERT_TRUE(goal.is_valid == true);
+    TEST_ASSERT_NOT_EQUAL(-1, start);
+    TEST_ASSERT_NOT_EQUAL(-1, goal);
     TEST_ASSERT_TRUE(nodes[0].is_valid == true);
     TEST_ASSERT_TRUE(nodes[703].left->is_valid == true);
     TEST_ASSERT_TRUE(nodes[17575].right->is_valid == true);
     TEST_ASSERT_EQUAL(17575, nodes[17575].code);
-    TEST_ASSERT_EQUAL_STRING(start.name, "AAA");
-    TEST_ASSERT_EQUAL_STRING(goal.name, "ZZZ");
+    TEST_ASSERT_EQUAL(0, start);
+    TEST_ASSERT_EQUAL(17575, goal);
 }
 
 
@@ -44,24 +56,19 @@ void test_read_line(const int index, const int expected, const int num)
         "CCC  (ZZZ, GGG)"
     };
     Node nodes[17576] = {0};
-    Node start = {0};
-    Node goal = {0};
-    TEST_ASSERT_TRUE(start.is_valid == false);
-    TEST_ASSERT_TRUE(goal.is_valid == false);
+    int start = -1;
+    int goal = -1;
     TEST_ASSERT_TRUE(nodes[num].is_valid == false);
-    int result = read_line(test_strings[index], nodes, 17576, &start, &goal);
+    int result = read_line(test_strings[index], nodes, &start, &goal);
     TEST_ASSERT_EQUAL(expected, result);
     if (result == 0) {
-        TEST_ASSERT_TRUE(start.is_valid == true);
-        TEST_ASSERT_TRUE(goal.is_valid == true);
+        TEST_ASSERT_NOT_EQUAL(-1, start);
+        TEST_ASSERT_NOT_EQUAL(-1, goal);
         TEST_ASSERT_TRUE(nodes[num].is_valid == true);
         TEST_ASSERT_TRUE(nodes[num].left->is_valid == true);
         TEST_ASSERT_TRUE(nodes[num].right->is_valid == true);
         TEST_ASSERT_EQUAL(num, nodes[num].code);
-        TEST_ASSERT_EQUAL_STRING(start.name, nodes[num].name);
-        TEST_ASSERT_EQUAL(goal.code, nodes[num].code);
+        TEST_ASSERT_EQUAL(start , nodes[num].code);
+        TEST_ASSERT_EQUAL(goal , nodes[num].code);
     }
 }
-
-
-// Node* find_next(Node* current, const char direction);
