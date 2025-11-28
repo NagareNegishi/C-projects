@@ -1,11 +1,12 @@
 #include "unity.h"
 #include "day8.h"
 #include "node.h"
+#include "my_math.h"
 
 
 void test_count_steps()
 {
-    int steps;
+    long long steps;
     // int result = count_steps("test/day8.txt", &steps);
     // int result = count_steps("src/input8.txt", &steps);
     // int result = count_steps_v2("test/day8_2.txt", &steps);

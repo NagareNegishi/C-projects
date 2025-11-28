@@ -17,4 +17,13 @@ long long gcd(long long a, long long b);
  */
 long long lcm(long long a, long long b);
 
+/**
+ * Finds the smallest value that satisfies all cycle patterns.
+ * @param offsets Array of offset values, where condition meet first time
+ * @param steps Array of step values, representing the cycle lengths
+ * @param count Number of equations
+ * @return The smallest value satisfying all equations
+ */
+long long find_sync_point(int* offsets, int* steps, int count);
+
 #endif // MY_MATH_H

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "day8.h"
+#include "my_math.h"
+#include <stdbool.h>
 
 /**
  * Counts the number of steps required to complete the task defined in the input file.
@@ -105,18 +107,12 @@ int read_line(const char* line, Node* nodes, int* start, int* goal)
 }
 
 
-
-
-
-
-
-
 /**
  * Counts the number of steps required to complete the task defined in the input file.
  * @param filename The path to the input file.
  * @param steps Pointer to an integer where the result will be stored.
  */
-int count_steps_v2(const char* filename, int* steps){
+int count_steps_v2(const char* filename, long long* steps){
     FILE* in = fopen(filename, "r");
     if (in == NULL){
         return 1;
@@ -135,6 +131,7 @@ int count_steps_v2(const char* filename, int* steps){
     int *start = NULL;
     int size;
     if (populate_nodes_v2(in, nodes, &start, &size) == 1) {
+        free(start);
         return 1;
     }
 
@@ -146,24 +143,32 @@ int count_steps_v2(const char* filename, int* steps){
     (*steps) = 0;
 
     // find each cycle
-    int cycle_from[size], cycle_len[size], clean_cycle[size];
+    int cycle_from[size], cycle_len[size];
+    bool clean_cycle = true;
     for (int i = 0; i < size; i++) {
         if (find_cycle(&nodes, start[i], &directions, len, &cycle_from[i], &cycle_len[i]) == 1) {
+            free(start);
             return 1;
         }
         // printf("Start: %s, Cycle from step %d, length %d\n", nodes[start[i]].name, cycle_from[i], cycle_len[i]);
-        if (cycle_from[i] == cycle_len[i]) {
-            clean_cycle[i] = 1;
-        } else {
-            clean_cycle[i] = 0;
+        if (cycle_from[i] != cycle_len[i]) {
+            clean_cycle = false;
         }
-
     }
 
-
+    // find step when all cycles align
+    if (clean_cycle) {
+        long long result = cycle_len[0];
+        for (int i = 1; i < size; i++) {
+            result = lcm(result, cycle_len[i]);
+        }
+        *steps = result;
+    } else {
+        *steps = find_sync_point(cycle_from, cycle_len, size);
+    }
+    free(start);
     return 0;
 }
-
 
 
 /**
@@ -229,9 +234,6 @@ int find_cycle(Node* nodes, const int start, const char* directions, const int l
 }
 
 
-
-
-
 /**
  * Populates the nodes array from the input file.
  */
@@ -283,6 +285,3 @@ int read_line_v2(const char* line, Node* nodes, int** start, int* size)
     nodes[codes[0]].right = &nodes[codes[2]];
     return 0;
 }
-
-
-

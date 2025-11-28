@@ -31,8 +31,7 @@ typedef struct {
 } Record;
 
 int find_cycle(Node* nodes, const int start, const char* directions, const int len, int* cycle_from, int* cycle_len);
-
-int count_steps_v2(const char* filename, int* steps);
+int count_steps_v2(const char* filename, long long* steps);
 int populate_nodes_v2(FILE* in, Node* nodes, int** start, int* size);
 int read_line_v2(const char* line, Node* nodes, int** start, int* size);
 
