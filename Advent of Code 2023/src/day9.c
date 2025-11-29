@@ -55,6 +55,8 @@ int get_history(const char* line, long long * value){
     }
 
     *value = calculate_history(list, size);
+    // *value = calculate_history_backwards(list, size); // for backwards calculation
+    free(list);
     return 1;
 }
 
@@ -76,4 +78,25 @@ long long calculate_history(long long* list, int size){
         return list[size - 1];
     }
     return list[size - 1] + calculate_history(next, size - 1);
+}
+
+
+// recursively calculate the history value
+long long calculate_history_backwards(long long* list, int size){
+    long long next[size - 1];
+    bool all_zero = true;
+    for (int i = 1; i < size; i++) {
+        long long first = list[i - 1];
+        long long second = list[i];
+        // long long diff = llabs(first - second);
+        long long diff = second - first;
+        next[i - 1] = diff;
+        if (diff != 0) {
+            all_zero = false;
+        }
+    }
+    if (all_zero) {
+        return list[0];
+    }
+    return list[0] - calculate_history_backwards(next, size - 1);
 }

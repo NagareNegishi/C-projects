@@ -6,8 +6,8 @@
 
 void test_get_total() {
     long long total = 0;
-    // int result = get_total("test/day9.txt", &total);
-    int result = get_total("src/input9.txt", &total);
+    int result = get_total("test/day9.txt", &total);
+    // int result = get_total("src/input9.txt", &total);
     TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_EQUAL_INT64(114, total);
     result = get_total("fake.txt", &total);
@@ -43,4 +43,13 @@ void test_calculate_history() {
     TEST_ASSERT_EQUAL_INT64(28, calculate_history(list2, 6));
     long long list3[] = {10, 13, 16, 21, 30, 45};
     TEST_ASSERT_EQUAL_INT64(68, calculate_history(list3, 6));
+}
+
+void test_calculate_history_backwards () {
+    long long list1[] = {0, 3, 6, 9, 12, 15};
+    TEST_ASSERT_EQUAL_INT64(-3, calculate_history_backwards (list1, 6));
+    long long list2[] = {1, 3, 6, 10, 15, 21};
+    TEST_ASSERT_EQUAL_INT64(0, calculate_history_backwards (list2, 6));
+    long long list3[] = {10, 13, 16, 21, 30, 45};
+    TEST_ASSERT_EQUAL_INT64(5, calculate_history_backwards (list3, 6));
 }
