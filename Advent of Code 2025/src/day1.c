@@ -119,35 +119,18 @@ int process_line_v2(const char* line, int* current, int* password){
     int passed_zero = 0;
     if (dir == RIGHT) {
         temp_pos = (*current + num) % 100;
-        // passed_zero = (*current + num) / 100; // integer division only counts full passes
-        int temp_num = num;
-        while (temp_num > 0) {
-            if ((*current + temp_num) > 100) {
-                passed_zero++;
-            }
-            temp_num -= 100;
-        }
+        passed_zero = (*current + num) / 100; // integer division only counts full passes
     } else {
         temp_pos = (*current - num) % 100;
         if (temp_pos < 0) {
             temp_pos = temp_pos + 100;
         }
-        
-        // if (num < *current) { // can not reach 0
-        //     passed_zero = 0;
-        // } else {
-        //     // passed_zero = (num - *current + 99) / 100; // +99 because we excluded current
-        //     passed_zero = 1 + (num - *current - 1) / 100;
-        // }
-
-
-        // count passes over zero
-        int temp_num = num;
-        while (temp_num > 0) {
-            if ((*current - temp_num) < 0) {
-                passed_zero++;
-            }
-            temp_num -= 100;
+        if (*current == 0) { // Starting at 0 is a special case
+            passed_zero = num / 100;
+        } else if (num < *current) { // can not reach 0
+            passed_zero = 0;
+        } else { // will pass 0 at least once
+            passed_zero = 1 + (num - *current) / 100;
         }
     }
 
@@ -161,3 +144,4 @@ int process_line_v2(const char* line, int* current, int* password){
     (*password) += passed_zero;
     return 0;
 }
+
