@@ -128,6 +128,18 @@
   # Enable to inject name of a test as a unique compilation symbol into its respective executable build. 
   :use_test_definition: FALSE 
 
+
+# # Configure additional command line flags provided to tools used in each build step
+# :flags:
+#   :test:
+#     :compile:
+#       '*':
+#         - -Wall  # Optional: enable warnings
+#     :link:
+#       '*':
+#         - -lm  # Required: link math library
+
+
 # Configure additional command line flags provided to tools used in each build step
 # :flags:
 #   :release:
@@ -351,6 +363,17 @@
 ################################################################
 # TOOLCHAIN CONFIGURATION
 ################################################################
+
+
+
+:tools:
+  :test_linker:
+    :executable: gcc
+    :arguments:
+      - ${1}
+      - -o ${2}
+      - -lm
+
 
 #:tools:
 # Ceedling defaults to using gcc for compiling, linking, etc.
