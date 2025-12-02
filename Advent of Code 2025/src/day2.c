@@ -55,15 +55,11 @@ int find_repeated_sequence(const long long start, const long long end, long long
     long long true_end = end;
     if (start_len % 2 != 0) {
         true_start = next_power_of_10(start);
+        start_len += 1;
     }
     if (end_len % 2 != 0) {
         true_end = next_power_of_10((end/10)) - 1;
-    }
-    if (true_start != start) {
-        // printf("==Adjusted start from %lld to %lld\n", start, true_start);
-    }
-    if (true_end != end) {
-        // printf("==Adjusted end from %lld to %lld\n", end, true_end);
+        end_len -= 1;
     }
     if (true_start > true_end) { // no valid range to check
         return 0;
@@ -75,7 +71,34 @@ int find_repeated_sequence(const long long start, const long long end, long long
     //     long long next_end = next_power_of_10((true_end/10)) - 1;
     //     find_repeated_sequence(true_start, next_end, total);
     // }
-
-
+    long long first_half;
+    long long candidate = get_candidate(true_start, start_len, &first_half);
+    while (candidate <= true_end) {
+        if (candidate >= start && candidate <= end) {
+            *total += candidate;
+        }
+        first_half += 1;
+        candidate = get_next_candidate(first_half, start_len);
+    }
     return 0;
+}
+
+long long get_candidate(long long num, int digit_len, long long* first_half){
+    long long half_power = 1;
+    for (int i = 0; i < (digit_len / 2); i++) {
+        half_power *= 10;
+    }
+    long long half = num / half_power;
+    long long candidate = half * half_power + half;
+    *first_half = half;
+    return candidate;
+}
+
+long long get_next_candidate(long long first_half, int digit_len){
+    long long half_power = 1;
+    for (int i = 0; i < (digit_len / 2); i++) {
+        half_power *= 10;
+    }
+    long long candidate = first_half * half_power + first_half;
+    return candidate;
 }

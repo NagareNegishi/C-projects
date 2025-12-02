@@ -12,14 +12,14 @@ void test_get_total_invalid_IDs(){
     TEST_ASSERT_EQUAL(1, result);
 }
 
-// void test_process_ID_range(){
-//     long long total = 0;
-//     const char* line = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
-//     char *ptr = (char*)line;
-//     int result = process_ID_range(ptr, &total);
-//     TEST_ASSERT_EQUAL(0, result);
-//     TEST_ASSERT_EQUAL(1227775554, total);
-// }
+void test_process_ID_range(){
+    long long total = 0;
+    const char* line = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
+    char *ptr = (char*)line;
+    int result = process_ID_range(ptr, &total);
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(1227775554, total);
+}
 
 
 void test_find_repeated_sequence(){
@@ -65,3 +65,11 @@ void test_find_repeated_sequence(){
     TEST_ASSERT_EQUAL(1227775554, total);
 }
 
+TEST_CASE(123100, 6, 123123, 123)
+TEST_CASE(4567, 4, 4545, 45)
+void test_get_candidate(long long num, int digit_len, long long expected, long long first_half){
+    long long half;
+    long long result = get_candidate(num, digit_len, &half);
+    TEST_ASSERT_EQUAL(expected, result);
+    TEST_ASSERT_EQUAL(first_half, half);
+}
