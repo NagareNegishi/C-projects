@@ -33,8 +33,8 @@ int process_ID_range(char* line, long long* total){
         if (sscanf(ptr, "%lld-%lld%n", &start, &end, &count) != 2) {
             return 1;
         }
-        // printf("Parsed range: %lld - %lld, total so far: %lld\n", start, end, *total);
-        if (find_repeated_sequence(start, end, total) != 0) {
+        if (find_repeated_sequence_v2(start, end, total) != 0) {
+        // if (find_repeated_sequence(start, end, total) != 0) {
             return 1;
         }
         ptr += count;
@@ -101,4 +101,42 @@ long long get_next_candidate(long long first_half, int digit_len){
     }
     long long candidate = first_half * half_power + first_half;
     return candidate;
+}
+
+
+// part 2
+// Check if a number is made of a pattern repeated at least twice
+int is_repeated_pattern(long long num) {
+    char str[50];
+    sprintf(str, "%lld", num);
+    int len = strlen(str);
+    
+    // Pattern must repeat at least twice, so pattern_len <= len/2
+    for (int pattern_len = 1; pattern_len <= len / 2; pattern_len++) {
+        // If not divisible, cannot form repeated pattern
+        if (len % pattern_len != 0) {
+            continue;
+        }
+        
+        // Check if the first pattern_len chars repeat throughout
+        int is_valid = 1;
+        for (int i = pattern_len; i < len; i++) {
+            if (str[i] != str[i % pattern_len]) {
+                is_valid = 0;
+                break;
+            }
+        }
+        if (is_valid) return 1;
+    }
+    return 0;
+}
+
+int find_repeated_sequence_v2(long long start, long long end, long long* total) {
+    // Simply iterate through the range and check each number
+    for (long long num = start; num <= end; num++) {
+        if (is_repeated_pattern(num)) {
+            *total += num;
+        }
+    }
+    return 0;
 }

@@ -11,4 +11,8 @@ long long get_candidate(long long num, int digit_len, long long* first_half);
 
 long long get_next_candidate(long long first_half, int digit_len);
 
+
+int is_repeated_pattern(long long num);
+int find_repeated_sequence_v2(long long start, long long end, long long* total);
+
 #endif // DAY_2_H
