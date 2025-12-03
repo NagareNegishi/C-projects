@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 #include "helper.h"
 
 /**
@@ -57,4 +58,16 @@ long long next_power_of_10(long long n){
     }
     int digits = count_digits(n);
     return (long long)pow(10, digits);
+}
+
+/**
+ * Gets the length of a line (string).
+ * @param line The input string.
+ * @return The length of the string.
+ */
+int get_line_length(const char* line){
+    if (line == NULL) {
+        return 0;
+    }
+    return (int)strlen(line);
 }

@@ -35,4 +35,12 @@ int count_digits(long long num);
 long long next_power_of_10(long long n);
 
 
+/**
+ * Gets the length of a line (string).
+ * @param line The input string.
+ * @return The length of the string.
+ */
+int get_line_length(const char* line);
+
+
 #endif // HELPER_H
