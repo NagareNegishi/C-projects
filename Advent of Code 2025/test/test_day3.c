@@ -79,13 +79,15 @@ void test_get_second_part(const int index, char expected, int first_index){
 void test_get_total_v2(){
     long long total;
     int result = get_total_v2("test/day3.txt", &total);
-    // int result = get_total("src/input3.txt", &total);
+    // int result = get_total_v2("src/input3.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(3121910778619, total);
-    result = get_total("fake.txt", &total);
+    result = get_total_v2("fake.txt", &total);
     TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_EQUAL(0, total);
 }
+
+
 
 TEST_CASE(0, 987654321111, 0)
 TEST_CASE(1, 811111111119, 0)

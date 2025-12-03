@@ -100,9 +100,9 @@ int get_total_v2(const char* filename, long long* total){
     }
 
     char line[200];
-    int sum = 0;
+    long long sum = 0;
     while (fgets(line, sizeof(line), in) != NULL) {
-        int joltage;
+        long long joltage;
         if (get_high_joltage(line, &joltage) != 0) {
             fclose(in);
             return 1;
@@ -115,7 +115,46 @@ int get_total_v2(const char* filename, long long* total){
 }
 
 
-int get_high_joltage(const char* line, long long* joltage);
+int get_high_joltage(const char* line, long long* joltage){
+    *joltage = 0;
+    int length = get_line_length(line) - 1; // exclude '\n'
+    if (length < 2) {
+        return 1;
+    }
+    int requires = 12; // need 12 digit
+    int index = 0;
+    char high_joltage[13];
+    high_joltage[12] = '\0';
+    for (int i = 0; i < 12; i++) {
+        char digit = get_best_digits(line, &index, requires, length);
+        if (digit == 'X') { // indicate fail
+            return 1;
+        }
+        requires--;
+        high_joltage[i] = digit;
+    }
+    sscanf(high_joltage, "%lld", joltage);
+    return 0;
+}
 
 // we know we need 12 digits, so pass current index and required digits
-int get_best_digits(const char* line, int* current_index, const int requires);
+char get_best_digits(const char* line, int* current_index, const int requires, const int max_len){
+    int index = *current_index;
+    int max_end = max_len - requires;
+    if (max_end == index) { // no range to search
+        (*current_index)++;
+        return line[index];
+    }
+
+    char max = line[index];
+    int max_position = index;
+    for (int i = index; i <= max_end; i++) {
+        if (line[i] > max) {
+            max = line[i];
+            max_position = i;
+        }
+    }
+    *current_index = max_position + 1;
+    return max;
+}
+

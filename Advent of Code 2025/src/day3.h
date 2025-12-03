@@ -14,5 +14,5 @@ int get_total_v2(const char* filename, long long* total);
 int get_high_joltage(const char* line, long long* joltage);
 
 // we know we need 12 digits, so pass current index and required digits
-int get_best_digits(const char* line, int* current_index, const int requires);
+char get_best_digits(const char* line, int* current_index, const int requires, const int max_len);
 #endif // DAY_3_H
