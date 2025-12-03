@@ -89,3 +89,33 @@ int get_second_part(const char* line, const int length, char* second, const int 
     *second = max;
     return 0;
 }
+
+// part 2
+
+int get_total_v2(const char* filename, long long* total){
+    *total = 0;
+    FILE* in = fopen(filename, "r");
+    if (in == NULL) {
+        return 1;
+    }
+
+    char line[200];
+    int sum = 0;
+    while (fgets(line, sizeof(line), in) != NULL) {
+        int joltage;
+        if (get_high_joltage(line, &joltage) != 0) {
+            fclose(in);
+            return 1;
+        }
+        sum += joltage;
+    }
+    fclose(in);
+    *total = sum;
+    return 0;
+}
+
+
+int get_high_joltage(const char* line, long long* joltage);
+
+// we know we need 12 digits, so pass current index and required digits
+int get_best_digits(const char* line, int* current_index, const int requires);
