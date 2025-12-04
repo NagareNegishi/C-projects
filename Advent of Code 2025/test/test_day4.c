@@ -16,8 +16,8 @@ void test_count_total(){
 
 void test_count_total_v2(){
     int total;
-    // int result = count_total_v2("test/day4.txt", &total);
-    int result = count_total_v2("src/input4.txt", &total);
+    int result = count_total_v2("test/day4.txt", &total);
+    // int result = count_total_v2("src/input4.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(43, total);
     result = count_total("fake.txt", &total);
