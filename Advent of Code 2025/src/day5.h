@@ -5,7 +5,7 @@
 typedef struct {
     long long start;
     long long end;
-    int is_valid; // for part 2
+    bool is_valid; // for part 2
 } Range;
 
 bool in_range(long long value, Range* range);
@@ -15,7 +15,7 @@ int count_total(const char* filename, int* total);
 Range parse_range(const char* line);
 
 //part2
-int count_total_range(const char* filename, int* total);
+int count_total_range(const char* filename, long long* total);
 
 bool is_overlapping(Range* r1, Range* r2);
 
