@@ -131,8 +131,19 @@ int get_total_v2(const char* filename, long long* total){
 
         // if not separator, one of row must have number
         int number = 0;
-
+        for (int row = 0; row < rows - 1; row++) { // skip operator row
+            char num = grid[row][col];
+            if (num >= '0' && num <= '9') {
+                number = number * 10 + (num - '0');
+            }
+        }
+        problems[problem_index].numbers[problems[problem_index].size] = number;
+        problems[problem_index].size += 1;
     }
 
+    // Evaluate problems
+    for (int i = 0; i <= problem_index; i++) {
+        *total += evaluate_problem(&problems[i]);
+    }
     return 0;
 }
