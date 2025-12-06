@@ -9,12 +9,12 @@ TEST_CASE(0, 5, '*', 120)
 TEST_CASE(1, 3, '+', 60)
 TEST_CASE(1, 3, '*', 6000)
 void test_evaluate_problem(int index, const int size, const char operation ,long long expected) {
-    const long long test_numbers[][5] = {
+    const int test_numbers[][5] = {
         {1, 2, 3, 4, 5},
         {10, 20, 30, 0, 0}
     };
     Problem problem = {0};
-    memcpy(problem.numbers, test_numbers[index], size * sizeof(long long));
+    memcpy(problem.numbers, test_numbers[index], size * sizeof(int));
     problem.size = size;
     problem.operation = operation;
     long long result = evaluate_problem(&problem);
@@ -45,8 +45,8 @@ void test_parse_problem(){
 
 void test_get_total(){
     long long total = 0;
-    // int result = get_total("test/day6.txt", &total);
-    int result = get_total("src/input6.txt", &total);
+    int result = get_total("test/day6.txt", &total);
+    // int result = get_total("src/input6.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(4277556, total);
     result = get_total("fake.txt", &total);
@@ -60,7 +60,7 @@ void test_get_total(){
 void test_get_total_v2(){
     long long total = 0;
     int result = get_total_v2("test/day6.txt", &total);
-    int result = get_total_v2("src/input6.txt", &total);
+    // int result = get_total_v2("src/input6.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(3263827, total);
     result = get_total_v2("fake.txt", &total);

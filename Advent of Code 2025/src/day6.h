@@ -9,7 +9,7 @@
 
 #define MAX_NUMBERS 5
 typedef struct {
-    long long numbers[MAX_NUMBERS];
+    int numbers[MAX_NUMBERS];
     int size;
     char operation; // '+' or '*'
 } Problem;

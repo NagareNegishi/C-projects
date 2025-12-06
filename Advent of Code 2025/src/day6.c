@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "day6.h"
 
 long long evaluate_problem(Problem* problem){
@@ -29,8 +30,8 @@ int parse_problem(const char* input, Problem* problem){
     if (input[0] == '+' || input[0] == '*') {
         problem->operation = input[0];
     } else {
-        long long value;
-        if (sscanf(input, "%lld", &value) != 1) {
+        int value;
+        if (sscanf(input, "%d", &value) != 1) {
             return 1;
         }
         problem->numbers[problem->size] = value;
@@ -87,23 +88,51 @@ int get_total_v2(const char* filename, long long* total){
 
     // since the space between values matters in part 2, I need to copy entire line as grid
     char grid[5][5000] = {0}; // dynamically allocating memory is not appropriate when the size is known
-    int row = 0;
+    int rows = 0;
     int max_col = 0;
-    while (fgets(grid[row], sizeof(grid[row]), in) != NULL) {
-        int len = strlen(grid[row]);
-        if (len > 0 && grid[row][len - 1] == '\n') {
-            grid[row][len - 1] = '\0'; // Remove newline character
+    while (fgets(grid[rows], sizeof(grid[rows]), in) != NULL) {
+        int len = strlen(grid[rows]);
+        if (len > 0 && grid[rows][len - 1] == '\n') {
+            grid[rows][len - 1] = '\0'; // Remove newline character
             len--;
         }
         if (len > max_col) {
             max_col = len;
         }
-        row++;
+        rows++;
     }
     fclose(in);
 
     Problem problems[2000] = {0};
     int problem_index = 0;
+
+    // Process columns right-to-left, ignore last col '\0'
+    for (int col = max_col - 1; col >= 0; col--) {
+
+        // if all col is ' ' the col is separator -> it also means end of this problem
+        bool is_space = true;
+        for (int row = 0; row < rows; row++) {
+            if (grid[row][col] != ' ') {
+                is_space = false;
+                break;
+            }
+        }
+        if (is_space) {
+            problem_index++; // for next problem
+            continue;
+        }
+
+        // at this point this col is part of problem
+        // check if it has operator
+        char operator = grid[rows - 1][col];
+        if (operator == '+' || operator == '*') {
+            problems[problem_index].operation = operator;
+        }
+
+        // if not separator, one of row must have number
+        int number = 0;
+
+    }
 
     return 0;
 }
