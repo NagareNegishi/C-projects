@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "day6.h"
 
 long long evaluate_problem(Problem* problem){
@@ -74,5 +75,35 @@ int get_total(const char* filename, long long* total){
         }
         *total += result;
     }
+    return 0;
+}
+
+
+// part2
+int get_total_v2(const char* filename, long long* total){
+    *total = 0;
+    FILE* in = fopen(filename, "r");
+    if (in == NULL) { return 1;}
+
+    // since the space between values matters in part 2, I need to copy entire line as grid
+    char grid[5][5000] = {0}; // dynamically allocating memory is not appropriate when the size is known
+    int row = 0;
+    int max_col = 0;
+    while (fgets(grid[row], sizeof(grid[row]), in) != NULL) {
+        int len = strlen(grid[row]);
+        if (len > 0 && grid[row][len - 1] == '\n') {
+            grid[row][len - 1] = '\0'; // Remove newline character
+            len--;
+        }
+        if (len > max_col) {
+            max_col = len;
+        }
+        row++;
+    }
+    fclose(in);
+
+    Problem problems[2000] = {0};
+    int problem_index = 0;
+
     return 0;
 }
