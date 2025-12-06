@@ -1,8 +1,15 @@
 #ifndef DAY_6_H
 #define DAY_6_H
 
+/**
+ * Fixed-size array is not flexible.
+ * However, I did enough dynamic memory allocation problems in the past.
+ * This is attempt to see how fixed-size arrays work in C.
+ */
+
+#define MAX_NUMBERS 5
 typedef struct {
-    long long *numbers;
+    long long numbers[MAX_NUMBERS];
     int size;
     char operation; // '+' or '*'
 } Problem;

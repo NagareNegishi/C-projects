@@ -1,4 +1,6 @@
 #include "unity.h"
+#include <stdlib.h>
+#include <string.h>
 #include "day6.h"
 
 
@@ -6,13 +8,13 @@ TEST_CASE(0, 5, '+', 15)
 TEST_CASE(0, 5, '*', 120)
 TEST_CASE(1, 3, '+', 60)
 TEST_CASE(1, 3, '*', 6000)
-void test_evaluate_problem_addition(int index, const int size, const char operation ,long long expected) {
-    const long long* test_numbers[] = {
-        (long long[]){1, 2, 3, 4, 5},
-        (long long[]){10, 20, 30}
+void test_evaluate_problem(int index, const int size, const char operation ,long long expected) {
+    const long long test_numbers[][5] = {
+        {1, 2, 3, 4, 5},
+        {10, 20, 30, 0, 0}
     };
     Problem problem = {0};
-    problem.numbers = (long long*)test_numbers[index];
+    memcpy(problem.numbers, test_numbers[index], size * sizeof(long long));
     problem.size = size;
     problem.operation = operation;
     long long result = evaluate_problem(&problem);
@@ -21,8 +23,6 @@ void test_evaluate_problem_addition(int index, const int size, const char operat
 
 void test_parse_problem(){
     Problem problem = {0};
-    long long array[4] = {0};
-    problem.numbers = array;
     int result = parse_problem("123", &problem);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(1, problem.size);
@@ -45,7 +45,8 @@ void test_parse_problem(){
 
 void test_get_total(){
     long long total = 0;
-    int result = get_total("test/day6.txt", &total);
+    // int result = get_total("test/day6.txt", &total);
+    int result = get_total("src/input6.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(4277556, total);
     result = get_total("fake.txt", &total);
