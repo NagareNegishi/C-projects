@@ -1,9 +1,18 @@
 #include "unity.h"
 #include "day7.h"
 
-Beams split_beams(const char* line, Beams* previous_beams);
 
-int get_total(const char* filename, int* total);
+
+void test_get_total(){
+    int total;
+    int result = get_total("test/day7.txt", &total);
+    // int result = get_total("src/input7.txt", &total);
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(21, total);
+    result = get_total("fake.txt", &total);
+    TEST_ASSERT_EQUAL(1, result);
+    TEST_ASSERT_EQUAL(0, total);
+}
 
 void test_split_beams(){
     Beams previous = {0};
