@@ -78,3 +78,29 @@ int get_total(const char* filename, int* total){
     fclose(in);
     return 0;
 }
+
+
+// part 2
+int get_total_v2(const char* filename, long long* total){
+    *total = 0;
+    FILE* in = fopen(filename, "r");
+    if (in == NULL) {
+        perror("Failed to open file");
+        return 1;
+    }
+
+    char line[256];
+    Beams beams = {0};
+    int line_number = 1; // first line is not 0 its 1
+    while (fgets(line, sizeof(line), in) != NULL) {
+        // skip even lines
+        if (line_number % 2 == 0) {
+            line_number++;
+            continue;
+        }
+        beams = split_beams(line, &beams, total);
+        line_number++;
+    }
+    fclose(in);
+    return 0;
+}

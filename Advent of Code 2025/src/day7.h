@@ -16,4 +16,8 @@ typedef struct {
 Beams split_beams(const char* line, Beams* previous_beams, int* total);
 
 int get_total(const char* filename, int* total);
+
+
+//part 2
+int get_total_v2(const char* filename, long long* total);
 #endif // DAY7_H

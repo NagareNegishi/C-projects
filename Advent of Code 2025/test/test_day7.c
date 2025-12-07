@@ -6,8 +6,8 @@
 
 void test_get_total(){
     int total;
-    // int result = get_total("test/day7.txt", &total);
-    int result = get_total("src/input7.txt", &total);
+    int result = get_total("test/day7.txt", &total);
+    // int result = get_total("src/input7.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(21, total);
     result = get_total("fake.txt", &total);
@@ -76,4 +76,17 @@ void test_split_beams(){
     TEST_ASSERT_EQUAL(11, result.indexes[6]);
     TEST_ASSERT_EQUAL(12, result.indexes[7]);
     TEST_ASSERT_EQUAL(14, result.indexes[8]);
+}
+
+
+// part 2
+void test_get_total_v2(){
+    long long total;
+    int result = get_total_v2("test/day7.txt", &total);
+    // int result = get_total_v2("src/input7.txt", &total);
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(40, total);
+    result = get_total_v2("fake.txt", &total);
+    TEST_ASSERT_EQUAL(1, result);
+    TEST_ASSERT_EQUAL(0, total);
 }
