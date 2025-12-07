@@ -19,5 +19,17 @@ int get_total(const char* filename, int* total);
 
 
 //part 2
+// I need to make tree structure to represent the beam splits
+// and make recursive function to traverse the tree and count the possible paths
+
+typedef struct BeamNode {
+    struct BeamNode* left;
+    struct BeamNode* right;
+    int left_index;
+    int right_index;
+} BeamNode;
+
+
+
 int get_total_v2(const char* filename, long long* total);
 #endif // DAY7_H
