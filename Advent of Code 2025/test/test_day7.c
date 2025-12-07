@@ -6,8 +6,8 @@
 
 void test_get_total(){
     int total;
-    int result = get_total("test/day7.txt", &total);
-    // int result = get_total("src/input7.txt", &total);
+    // int result = get_total("test/day7.txt", &total);
+    int result = get_total("src/input7.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(21, total);
     result = get_total("fake.txt", &total);
