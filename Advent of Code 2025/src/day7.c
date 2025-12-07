@@ -30,7 +30,7 @@ Beams split_beams(const char* line, Beams* previous_beams){
         // int new_size = 0;
         // int new_indexes[150] = {0};
         for (int i = 0; i < previous_beams->size; i++) {
-            int index = previous_beams->indexes[0];
+            int index = previous_beams->indexes[i];
             char chr = line[index];
             if (chr == '.') { // just pass beans as it is
                 if (!contains(result.indexes, result.size, index)) {
@@ -54,4 +54,6 @@ Beams split_beams(const char* line, Beams* previous_beams){
     }
 }
 
-int get_total(const char* filename, int* total);
+int get_total(const char* filename, int* total){
+    return 0;
+}
