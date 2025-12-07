@@ -7,7 +7,7 @@
 /**
  * Parse a line of beam input and return the split beams
  */
-Beams split_beams(const char* line, Beams* previous_beams){
+Beams split_beams(const char* line, Beams* previous_beams, int* total){
     if (line == NULL) {
         perror("line is NULL!, nothing changes\n");
         return *previous_beams;
@@ -40,6 +40,7 @@ Beams split_beams(const char* line, Beams* previous_beams){
             } else if (chr == '^') { // split beans
                 int left = index - 1;
                 int right = index + 1;
+                (*total)++;
                 if (!contains(result.indexes, result.size, left)) {
                     result.indexes[result.size] = left;
                     result.size++;
@@ -55,5 +56,25 @@ Beams split_beams(const char* line, Beams* previous_beams){
 }
 
 int get_total(const char* filename, int* total){
+    *total = 0;
+    FILE* in = fopen(filename, "r");
+    if (in == NULL) {
+        perror("Failed to open file");
+        return 1;
+    }
+
+    char line[256];
+    Beams beams = {0};
+    int line_number = 1; // first line is not 0 its 1
+    while (fgets(line, sizeof(line), in) != NULL) {
+        // skip even lines
+        if (line_number % 2 == 0) {
+            line_number++;
+            continue;
+        }
+        beams = split_beams(line, &beams, total);
+        line_number++;
+    }
+    fclose(in);
     return 0;
 }

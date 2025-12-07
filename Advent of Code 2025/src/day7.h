@@ -13,7 +13,7 @@ typedef struct {
 /**
  * Parse a line of beam input and return the split beams
  */
-Beams split_beams(const char* line, Beams* previous_beams);
+Beams split_beams(const char* line, Beams* previous_beams, int* total);
 
 int get_total(const char* filename, int* total);
 #endif // DAY7_H
