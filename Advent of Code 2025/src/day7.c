@@ -27,8 +27,6 @@ Beams split_beams(const char* line, Beams* previous_beams, int* total){
     // then split beam
     else {
         Beams result = {0};
-        // int new_size = 0;
-        // int new_indexes[150] = {0};
         for (int i = 0; i < previous_beams->size; i++) {
             int index = previous_beams->indexes[i];
             char chr = line[index];
@@ -90,17 +88,30 @@ int get_total_v2(const char* filename, long long* total){
     }
 
     char line[256];
-    Beams beams = {0};
-    int line_number = 1; // first line is not 0 its 1
+    Beams beams[150] = {0};
+    int beams_count = 0;
+    int line_number = 1;
+    int unused = 0;
+    
     while (fgets(line, sizeof(line), in) != NULL) {
         // skip even lines
         if (line_number % 2 == 0) {
             line_number++;
             continue;
         }
-        beams = split_beams(line, &beams, total);
+        // For first line (beams_count = 0), pass empty beam to trigger 'S' search
+        // For other lines, pass the previous beam
+        if (beams_count == 0) {
+            beams[0] = split_beams(line, &beams[0], &unused);
+        } else {
+            beams[beams_count] = split_beams(line, &beams[beams_count - 1], &unused);
+        }
+        beams_count++;
         line_number++;
     }
     fclose(in);
+
+
+
     return 0;
 }
