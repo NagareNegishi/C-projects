@@ -46,6 +46,7 @@ BestCorners findBestCorners(Point* points, int point_size){
     Point best_top_right = points[0];
     Point best_bottom_left = points[0];
     Point best_bottom_right = points[0];
+    // then find best corners
     for (int i = 1; i < point_size; i++) {
         if (points[i].x + points[i].y < best_top_left.x + best_top_left.y) {
             best_top_left = points[i];
@@ -60,7 +61,6 @@ BestCorners findBestCorners(Point* points, int point_size){
             best_bottom_right = points[i];
         }
     }
-
     BestCorners corners = {best_top_left, best_top_right, best_bottom_left, best_bottom_right};
     return corners;
 }

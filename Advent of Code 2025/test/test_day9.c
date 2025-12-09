@@ -3,7 +3,8 @@
 
 void test_getMaxArea() {
     long long area = 0;
-    int result = getMaxArea("test/day9.txt", &area);
+    // int result = getMaxArea("test/day9.txt", &area);
+    int result = getMaxArea("src/input9.txt", &area);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(50, area);
     result = getMaxArea("fake.txt", &area);
