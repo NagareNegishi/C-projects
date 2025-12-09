@@ -43,8 +43,8 @@ void test_findBestCorners() {
 
 void test_getMaxArea_v2() {
     long long area = 0;
-    // int result = getMaxArea_v2("test/day9.txt", &area);
-    int result = getMaxArea_v2("src/input9.txt", &area);
+    int result = getMaxArea_v2("test/day9.txt", &area);
+    // int result = getMaxArea_v2("src/input9.txt", &area);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(24, area);
     result = getMaxArea_v2("fake.txt", &area);
