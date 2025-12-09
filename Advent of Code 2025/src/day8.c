@@ -11,6 +11,7 @@ double distance(Point* a, Point* b){
     return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
+
 int get_answer(const char* filename, long long* answer){
     *answer = 0;
     int point_size = 0;
@@ -19,17 +20,13 @@ int get_answer(const char* filename, long long* answer){
         return 1;
     }
 
-    // initialize connection tracking arrays
     int parent[point_size];
-    // int connection_count[point_size]; // upto 2 connections
-    int connection_size[point_size]; // size of each connection
+    int connection_size[point_size];
     for (int i = 0; i < point_size; i++) {
-        parent[i] = i; // each point's is its own parent initially
-        // connection_count[i] = 0;
-        connection_size[i] = 1; // each point is a connection of size 1
+        parent[i] = i;
+        connection_size[i] = 1;
     }
 
-    // bit wasteful but C have disadvantages
     bool visited[point_size][point_size];
     for (int i = 0; i < point_size; i++) {
         for (int j = 0; j < point_size; j++) {
@@ -37,18 +34,14 @@ int get_answer(const char* filename, long long* answer){
         }
     }
 
-    // find first 1000 shortest connections
-    for (int n = 0; n < 10; n++) { // 10 for test, 1000 for real
+    int target = (point_size <= 20) ? 10 : 1000;
+    for (int n = 0; n < target; n++) {
         double min_dist = INFINITY;
         int min_i = -1;
         int min_j = -1;
 
         for (int i = 0; i < point_size; i++) {
-            // skip if already has 2 connections
-            // if (connection_count[i] >= 2) { continue; }
             for (int j = i + 1; j < point_size; j++) {
-                // skip if already has 2 connections or already visited
-                // if (connection_count[j] >= 2) { continue; }
                 if (visited[i][j]) { continue; }
                 
                 double dist = distance(&points[i], &points[j]);
@@ -59,56 +52,145 @@ int get_answer(const char* filename, long long* answer){
                 }
             }
         }
-        if (min_i == -1) { // no more valid connections
+        if (min_i == -1) {
             break;
         }
-        // mark this pair as visited and update connection counts
-        // if (visited[min_i][min_j] == false) {
-            visited[min_i][min_j] = true;
-            visited[min_j][min_i] = true;
-            // connection_count[min_i]++;
-            // connection_count[min_j]++;
+        
+        visited[min_i][min_j] = true;
+        visited[min_j][min_i] = true;
 
-            // check if this connection merges two different groups
-            int root_i = find(min_i, parent);
-            int root_j = find(min_j, parent);
-            if (root_i != root_j) {
-                // merge smaller group into larger group
-                if (connection_size[root_i] < connection_size[root_j]) {
-                    parent[root_i] = root_j;
-                    connection_size[root_j] += connection_size[root_i];
-                } else {
-                    parent[root_j] = root_i;
-                    connection_size[root_i] += connection_size[root_j];
-                }
+        int root_i = find(min_i, parent);
+        int root_j = find(min_j, parent);
+        if (root_i != root_j) {
+            if (connection_size[root_i] < connection_size[root_j]) {
+                parent[root_i] = root_j;
+                connection_size[root_j] += connection_size[root_i];
+            } else {
+                parent[root_j] = root_i;
+                connection_size[root_i] += connection_size[root_j];
             }
-        // }
+        }
     }
 
-    // find top 3
-    int top3_roots[3] = {-1, -1, -1};
     int top3_sizes[3] = {0, 0, 0};
     for (int i = 0; i < point_size; i++) {
         int root = find(i, parent);
-        if (root != i) { continue; } // only consider root nodes
+        if (root != i) { continue; }
         int size = connection_size[root];
         for (int j = 0; j < 3; j++) {
             if (size > top3_sizes[j]) {
-                // shift down
                 for (int k = 2; k > j; k--) {
                     top3_sizes[k] = top3_sizes[k - 1];
-                    top3_roots[k] = top3_roots[k - 1];
                 }
                 top3_sizes[j] = size;
-                top3_roots[j] = root;
                 break;
             }
         }
     }
-    printf("Top 3 connection sizes: %d, %d, %d\n", top3_sizes[0], top3_sizes[1], top3_sizes[2]);
+    
     *answer = (long long)top3_sizes[0] * top3_sizes[1] * top3_sizes[2];
     return 0;
 }
+
+
+// int get_answer(const char* filename, long long* answer){
+//     *answer = 0;
+//     int point_size = 0;
+//     Point points[MAX_N] = {0};
+//     if (generate_points(filename, points, &point_size) != 0) {
+//         return 1;
+//     }
+
+//     // initialize connection tracking arrays
+//     int parent[point_size];
+//     // int connection_count[point_size]; // upto 2 connections
+//     int connection_size[point_size]; // size of each connection
+//     for (int i = 0; i < point_size; i++) {
+//         parent[i] = i; // each point's is its own parent initially
+//         // connection_count[i] = 0;
+//         connection_size[i] = 1; // each point is a connection of size 1
+//     }
+
+//     // bit wasteful but C have disadvantages
+//     bool visited[point_size][point_size];
+//     for (int i = 0; i < point_size; i++) {
+//         for (int j = 0; j < point_size; j++) {
+//             visited[i][j] = false;
+//         }
+//     }
+
+//     // find first 1000 shortest connections
+//     for (int n = 0; n < 1000; n++) { // 10 for test, 1000 for real
+//         double min_dist = INFINITY;
+//         int min_i = -1;
+//         int min_j = -1;
+
+//         for (int i = 0; i < point_size; i++) {
+//             // skip if already has 2 connections
+//             // if (connection_count[i] >= 2) { continue; }
+//             for (int j = i + 1; j < point_size; j++) {
+//                 // skip if already has 2 connections or already visited
+//                 // if (connection_count[j] >= 2) { continue; }
+//                 if (visited[i][j]) { continue; }
+                
+//                 double dist = distance(&points[i], &points[j]);
+//                 if (dist < min_dist) {
+//                     min_dist = dist;
+//                     min_i = i;
+//                     min_j = j;
+//                 }
+//             }
+//         }
+//         if (min_i == -1) { // no more valid connections
+//             break;
+//         }
+//         // mark this pair as visited and update connection counts
+//         // if (visited[min_i][min_j] == false) {
+//             visited[min_i][min_j] = true;
+//             visited[min_j][min_i] = true;
+//             // connection_count[min_i]++;
+//             // connection_count[min_j]++;
+
+//             // check if this connection merges two different groups
+//             int root_i = find(min_i, parent);
+//             int root_j = find(min_j, parent);
+//             if (root_i != root_j) {
+//                 // merge smaller group into larger group
+//                 if (connection_size[root_i] < connection_size[root_j]) {
+//                     parent[root_i] = root_j;
+//                     connection_size[root_j] += connection_size[root_i];
+//                 } else {
+//                     parent[root_j] = root_i;
+//                     connection_size[root_i] += connection_size[root_j];
+//                 }
+//             }
+//         // }
+//     }
+
+//     // find top 3
+//     int top3_roots[3] = {-1, -1, -1};
+//     int top3_sizes[3] = {0, 0, 0};
+//     for (int i = 0; i < point_size; i++) {
+//         int root = find(i, parent);
+//         if (root != i) { continue; } // only consider root nodes
+//         int size = connection_size[root];
+//         for (int j = 0; j < 3; j++) {
+//             if (size > top3_sizes[j]) {
+//                 // shift down
+//                 for (int k = 2; k > j; k--) {
+//                     top3_sizes[k] = top3_sizes[k - 1];
+//                     top3_roots[k] = top3_roots[k - 1];
+//                 }
+//                 top3_sizes[j] = size;
+//                 top3_roots[j] = root;
+//                 break;
+//             }
+//         }
+//     }
+//     printf("Top 3 connection sizes: %d, %d, %d\n", top3_sizes[0], top3_sizes[1], top3_sizes[2]);
+//     *answer = (long long)top3_sizes[0] * top3_sizes[1] * top3_sizes[2];
+//     return 0;
+// }
 
 // recursively find and update the leader/parent of x
 int find(int x, int* parent) {

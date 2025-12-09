@@ -19,6 +19,7 @@ void test_distance_between_points() {
 void test_get_answer() {
     long long answer = 0;
     int result = get_answer("test/day8.txt", &answer);
+    // int result = get_answer("src/input8.txt", &answer);
     TEST_ASSERT_EQUAL_INT(0, result);
     TEST_ASSERT_EQUAL_INT64(40, answer);
     result = get_answer("fake.txt", &answer);
