@@ -22,8 +22,15 @@
 #define MAX_N 1000
 
 typedef struct {
-    double x, y, z;
+    int x, y, z;
 } Point;
+
+double distance(Point* a, Point* b);
+
+int get_answer(const char* filename, long long* answer);
+
+Point* generate_points(const char* filename, int* point_size);
+
 
 
 #endif // DAY8_H
