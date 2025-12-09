@@ -1,5 +1,9 @@
 #include "unity.h"
+#include <math.h>
+#include <stdbool.h>
+#include <stdlib.h>
 #include "day8.h"
+
 
 
 void test_distance_between_points() {
