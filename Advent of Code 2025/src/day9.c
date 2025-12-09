@@ -3,6 +3,16 @@
 
 
 int getMaxArea(const char* filename, long long* area){
+    *area = 0;
+    Point points[MAX_POINTS];
+    int point_size;
+    if (readPointsFromFile(filename, points, &point_size) != 0) {
+        return 1;
+    }
+    BestCorners corners = findBestCorners(points, point_size);
+    long long area1 = (long long)(corners.bottom_right.x - corners.top_left.x) * (corners.bottom_right.y - corners.top_left.y);
+    long long area2 = (long long)(corners.top_right.x - corners.bottom_left.x) * (corners.bottom_left.y - corners.top_right.y);
+    *area = (area1 > area2) ? area1 : area2;
     return 0;
 }
 
