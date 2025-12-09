@@ -3,8 +3,8 @@
 
 void test_getMaxArea() {
     long long area = 0;
-    // int result = getMaxArea("test/day9.txt", &area);
-    int result = getMaxArea("src/input9.txt", &area);
+    int result = getMaxArea("test/day9.txt", &area);
+    // int result = getMaxArea("src/input9.txt", &area);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(50, area);
     result = getMaxArea("fake.txt", &area);
@@ -37,4 +37,17 @@ void test_findBestCorners() {
     TEST_ASSERT_EQUAL(5, corners.bottom_left.y);
     TEST_ASSERT_EQUAL(11, corners.bottom_right.x);
     TEST_ASSERT_EQUAL(7, corners.bottom_right.y);
+}
+
+// part2
+
+void test_getMaxArea_v2() {
+    long long area = 0;
+    // int result = getMaxArea_v2("test/day9.txt", &area);
+    int result = getMaxArea_v2("src/input9.txt", &area);
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(24, area);
+    result = getMaxArea_v2("fake.txt", &area);
+    TEST_ASSERT_EQUAL(1, result);
+    TEST_ASSERT_EQUAL(0, area);
 }
