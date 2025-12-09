@@ -82,6 +82,49 @@ int compare_point(const void* a, const void* b){
 
 
 // part2 raycasting
+
+
+// int getMaxArea_v2(const char* filename, long long* area){
+//     *area = 0;
+//     Point points[MAX_POINTS];
+//     int point_size;
+//     if (readPointsFromFile(filename, points, &point_size) != 0) {
+//         return 1;
+//     }
+
+//     // For each pair of red tiles
+//     for (int i = 0; i < point_size; i++) {
+//         for (int j = i + 1; j < point_size; j++) {
+//             // Get rectangle bounds
+//             int x1 = (points[i].x < points[j].x) ? points[i].x : points[j].x;
+//             int x2 = (points[i].x > points[j].x) ? points[i].x : points[j].x;
+//             int y1 = (points[i].y < points[j].y) ? points[i].y : points[j].y;
+//             int y2 = (points[i].y > points[j].y) ? points[i].y : points[j].y;
+            
+//             // Check if ALL tiles in rectangle are red or green
+//             int valid = 1;
+//             for (int y = y1; y <= y2 && valid; y++) {
+//                 for (int x = x1; x <= x2 && valid; x++) {
+//                     Point p = {x, y};
+//                     if (!isRedOrGreen(p, points, point_size)) {
+//                         valid = 0;
+//                     }
+//                 }
+//             }
+            
+//             if (valid) {
+//                 long long candidate = (long long)(x2 - x1 + 1) * (y2 - y1 + 1);
+//                 // Update max area if larger
+//                 if (candidate > *area) {
+//                     *area = candidate;
+//                 }
+//             }
+//         }
+//     }
+//     return 0;
+// }
+
+// Optimized getMaxArea_v2
 int getMaxArea_v2(const char* filename, long long* area){
     *area = 0;
     Point points[MAX_POINTS];
@@ -90,32 +133,74 @@ int getMaxArea_v2(const char* filename, long long* area){
         return 1;
     }
 
-    // For each pair of red tiles
+    // Calculate bounding box of polygon
+    int min_x = points[0].x, max_x = points[0].x;
+    int min_y = points[0].y, max_y = points[0].y;
+    for (int i = 1; i < point_size; i++) {
+        if (points[i].x < min_x) min_x = points[i].x;
+        if (points[i].x > max_x) max_x = points[i].x;
+        if (points[i].y < min_y) min_y = points[i].y;
+        if (points[i].y > max_y) max_y = points[i].y;
+    }
+
+    int checked = 0;
+    int skipped = 0;
     for (int i = 0; i < point_size; i++) {
         for (int j = i + 1; j < point_size; j++) {
-            // Get rectangle bounds
             int x1 = (points[i].x < points[j].x) ? points[i].x : points[j].x;
             int x2 = (points[i].x > points[j].x) ? points[i].x : points[j].x;
             int y1 = (points[i].y < points[j].y) ? points[i].y : points[j].y;
             int y2 = (points[i].y > points[j].y) ? points[i].y : points[j].y;
             
-            // Check if ALL tiles in rectangle are red or green
+            // Skip if potential can't beat current max
+            long long potential = (long long)(x2 - x1 + 1) * (y2 - y1 + 1);
+            if (potential <= *area) {
+                skipped++;
+                continue;
+            }
+            
+            // OPTIMIZATION: Only check perimeter, not entire rectangle
+            // If perimeter is all green/red, assume interior is too
             int valid = 1;
-            for (int y = y1; y <= y2 && valid; y++) {
-                for (int x = x1; x <= x2 && valid; x++) {
-                    Point p = {x, y};
-                    if (!isRedOrGreen(p, points, point_size)) {
-                        valid = 0;
-                    }
+            
+            // Check all 4 corners first
+            Point corners[4] = {{x1, y1}, {x2, y1}, {x1, y2}, {x2, y2}};
+            for (int c = 0; c < 4 && valid; c++) {
+                if (!isRedOrGreen(corners[c], points, point_size)) {
+                    valid = 0;
                 }
             }
             
-            if (valid) {
-                long long candidate = (long long)(x2 - x1 + 1) * (y2 - y1 + 1);
-                // Update max area if larger
-                if (candidate > *area) {
-                    *area = candidate;
+            if (!valid) {
+                skipped++;
+                continue;
+            }
+            
+            // Sample edges more sparsely for large rectangles
+            int step = 1;
+            if (potential > 100000) step = 10;
+            if (potential > 1000000) step = 100;
+            
+            // Check top and bottom edges
+            for (int x = x1; x <= x2 && valid; x += step) {
+                if (!isRedOrGreen((Point){x, y1}, points, point_size) ||
+                    !isRedOrGreen((Point){x, y2}, points, point_size)) {
+                    valid = 0;
                 }
+            }
+            
+            // Check left and right edges
+            for (int y = y1; y <= y2 && valid; y += step) {
+                if (!isRedOrGreen((Point){x1, y}, points, point_size) ||
+                    !isRedOrGreen((Point){x2, y}, points, point_size)) {
+                    valid = 0;
+                }
+            }
+            if (valid) {
+                checked++;
+                *area = potential;
+            } else {
+                skipped++;
             }
         }
     }
