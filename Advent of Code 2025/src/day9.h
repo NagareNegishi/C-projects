@@ -32,5 +32,11 @@ BestCorners findBestCorners(Point* points, int point_size);
 
 int compare_point(const void* a, const void* b);
 
+// Part 2 functions
+int getMaxArea_v2(const char* filename, long long* area);
+int isPointInPolygon(Point point, Point* polygon, int n);
+int isPointOnBoundary(Point point, Point* polygon, int n);
+int isRedOrGreen(Point point, Point* redTiles, int n);
+
 
 #endif // DAY9_H
