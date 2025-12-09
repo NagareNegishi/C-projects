@@ -29,7 +29,7 @@ double distance(Point* a, Point* b);
 
 int get_answer(const char* filename, long long* answer);
 
-Point* generate_points(const char* filename, int* point_size);
+int generate_points(const char* filename, Point* points, int* point_size);
 
 
 

@@ -28,10 +28,14 @@ void test_get_answer() {
 
 void test_generate_points() {
     int point_size = 0;
-    Point* points = generate_points("test/day8.txt", &point_size);
-    TEST_ASSERT_NOT_NULL(points);
+    Point points[MAX_N] = {0};
+    int result = generate_points("test/day8.txt", points, &point_size);
+    TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(20, point_size);
-    TEST_ASSERT_EQUAL(169, points[0].x);
+    TEST_ASSERT_EQUAL(162, points[0].x);
     TEST_ASSERT_EQUAL(817, points[0].y);
     TEST_ASSERT_EQUAL(812, points[0].z);
+    TEST_ASSERT_EQUAL(425, points[19].x);
+    TEST_ASSERT_EQUAL(690, points[19].y);
+    TEST_ASSERT_EQUAL(689, points[19].z);
 }

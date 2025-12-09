@@ -14,13 +14,34 @@ double distance(Point* a, Point* b){
 int get_answer(const char* filename, long long* answer){
     *answer = 0;
     int point_size = 0;
-    Point* points = generate_points(filename, &point_size);
-    if(points == NULL){
+    Point points[MAX_N] = {0};
+    if (generate_points(filename, points, &point_size) != 0) {
         return 1;
     }
+
     return 0;
 }
 
-Point* generate_points(const char* filename, int* point_size){
-    return NULL;
+int generate_points(const char* filename, Point* points, int* point_size){
+    FILE* in = fopen(filename, "r");
+    if(in == NULL){
+        return 1;
+    }
+    *point_size = 0;
+    char buffer[256];
+    
+    while (fgets(buffer, sizeof(buffer), in) != NULL) {
+        if(*point_size >= MAX_N){
+            perror("Exceeded maximum number of points");
+            break;
+        }
+        if (sscanf(buffer, "%d,%d,%d", &points[*point_size].x, &points[*point_size].y, &points[*point_size].z) != 3) {
+            perror("Invalid point format");
+            fclose(in);
+            return 1;
+        }
+        (*point_size)++;
+    }
+    fclose(in);
+    return 0;
 }
