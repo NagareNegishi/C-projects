@@ -30,5 +30,7 @@ int readPointsFromFile(const char* filename, Point* points, int* point_size);
 
 BestCorners findBestCorners(Point* points, int point_size);
 
+int compare_point(const void* a, const void* b);
+
 
 #endif // DAY9_H

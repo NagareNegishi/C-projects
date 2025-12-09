@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "day9.h"
 
 
@@ -39,6 +40,27 @@ int readPointsFromFile(const char* filename, Point* points, int* point_size){
 }
 
 BestCorners findBestCorners(Point* points, int point_size){
+    // first sort by x and y
+    qsort(points, point_size, sizeof(Point), compare_point);
+    printf("Sorted Points:\n");
+    for (int i = 0; i < point_size; i++) {
+        printf("(%d, %d)\n", points[i].x, points[i].y);
+    }
+    Point best_left_top = points[0];
+    Point best_right_top = points[0];
+    Point best_left_bottom = points[0];
+    Point best_right_bottom = points[0];
+
     BestCorners corners = {0};
     return corners;
+}
+
+
+int compare_point(const void* a, const void* b){
+    Point* point_a = (Point*)a;
+    Point* point_b = (Point*)b;
+    if (point_a->y != point_b->y) {
+        return point_a->y - point_b->y;
+    }
+    return point_a->x - point_b->x;
 }
