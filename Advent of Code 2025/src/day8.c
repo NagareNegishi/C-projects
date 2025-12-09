@@ -36,7 +36,7 @@ int get_answer(const char* filename, long long* answer){
         double min_dist = INFINITY;
         int min_i = -1;
         int min_j = -1;
-
+        
         for (int i = 0; i < point_size; i++) {
             // skip if already has 2 connections
             if (connection_count[i] >= 2) { continue; }
@@ -62,6 +62,19 @@ int get_answer(const char* filename, long long* answer){
             visited[min_j][min_i] = true;
             connection_count[min_i]++;
             connection_count[min_j]++;
+
+            // check if this connection merges two different groups
+            int root_i = find(min_i, parent);
+            int root_j = find(min_j, parent);
+            if (root_i != root_j) {
+                // merge smaller group into larger group
+                if (connection_size[root_i] < connection_size[root_j]) {
+                    parent[root_i] = root_j;
+                    connection_size[root_j] += connection_size[root_i];
+                } else {
+                    parent[root_j] = root_i;
+                    connection_size[root_i] += connection_size[root_j];
+            }
         }
     }
 

@@ -30,6 +30,7 @@ void test_generate_points() {
     int point_size = 0;
     Point points[MAX_N] = {0};
     int result = generate_points("test/day8.txt", points, &point_size);
+    // int result = generate_points("src/input8.txt", points, &point_size);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(20, point_size);
     TEST_ASSERT_EQUAL(162, points[0].x);
