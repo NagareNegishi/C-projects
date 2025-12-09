@@ -11,8 +11,8 @@ int getMaxArea(const char* filename, long long* area){
         return 1;
     }
     BestCorners corners = findBestCorners(points, point_size);
-    long long area1 = (long long)(corners.bottom_right.x - corners.top_left.x) * (corners.bottom_right.y - corners.top_left.y);
-    long long area2 = (long long)(corners.top_right.x - corners.bottom_left.x) * (corners.bottom_left.y - corners.top_right.y);
+    long long area1 = (long long)(corners.bottom_right.x - corners.top_left.x + 1) * (corners.bottom_right.y - corners.top_left.y + 1);
+    long long area2 = (long long)(corners.top_right.x - corners.bottom_left.x+ 1) * (corners.bottom_left.y - corners.top_right.y + 1);
     *area = (area1 > area2) ? area1 : area2;
     return 0;
 }
@@ -42,16 +42,26 @@ int readPointsFromFile(const char* filename, Point* points, int* point_size){
 BestCorners findBestCorners(Point* points, int point_size){
     // first sort by x and y
     qsort(points, point_size, sizeof(Point), compare_point);
-    printf("Sorted Points:\n");
-    for (int i = 0; i < point_size; i++) {
-        printf("(%d, %d)\n", points[i].x, points[i].y);
+    Point best_top_left = points[0];
+    Point best_top_right = points[0];
+    Point best_bottom_left = points[0];
+    Point best_bottom_right = points[0];
+    for (int i = 1; i < point_size; i++) {
+        if (points[i].x + points[i].y < best_top_left.x + best_top_left.y) {
+            best_top_left = points[i];
+        }
+        if ((-points[i].x) + points[i].y < (-best_top_right.x) + best_top_right.y) {
+            best_top_right = points[i];
+        }
+        if (points[i].x + (-points[i].y) < best_bottom_left.x + (-best_bottom_left.y)) {
+            best_bottom_left = points[i];
+        }
+        if ((-points[i].x) + (-points[i].y) < (-best_bottom_right.x) + (-best_bottom_right.y)) {
+            best_bottom_right = points[i];
+        }
     }
-    Point best_left_top = points[0];
-    Point best_right_top = points[0];
-    Point best_left_bottom = points[0];
-    Point best_right_bottom = points[0];
 
-    BestCorners corners = {0};
+    BestCorners corners = {best_top_left, best_top_right, best_bottom_left, best_bottom_right};
     return corners;
 }
 
