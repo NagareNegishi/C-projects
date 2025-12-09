@@ -222,6 +222,7 @@
   :test: # Help the compiler accept my TEST_CASE lines.
     - TEST
     - UNITY_SUPPORT_TEST_CASES # <— this makes TEST_CASE macro available
+    - UNITY_INCLUDE_DOUBLE # <— this makes Unity support double type
   :test_preprocess: # Help Ceedling understand my TEST_CASE lines.
     - TEST
     - UNITY_SUPPORT_TEST_CASES
