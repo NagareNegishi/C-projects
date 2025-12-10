@@ -42,11 +42,9 @@ int check_machine(const char* line){
 }
 
 uint16_t convert_diagram(char* diagram){
-    printf("Converting diagram: %s\n", diagram);
     uint16_t result = 0;
     diagram++; // skip initial '['
     while (*diagram != ']') {
-        printf("Char: %c\n", *diagram);
         result <<= 1;
         if (*diagram == '#') {
             result |= 1;
@@ -59,7 +57,15 @@ uint16_t convert_diagram(char* diagram){
 }
 
 uint16_t convert_buttons(char* buttons){
-    return 0;
+    uint16_t result = 0;
+    while (*buttons != ')') {
+        if (*buttons >= '0' && *buttons <= '9') {
+            int index = *buttons - '0';
+            result |= (1 << index);
+        }
+        buttons++;
+    }
+    return result;
 }
 
 
