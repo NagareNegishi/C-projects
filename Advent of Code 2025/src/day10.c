@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "day10.h"
 
 int get_fewest_button_presses(const char* filename, long long* total){
@@ -23,7 +24,22 @@ int get_fewest_button_presses(const char* filename, long long* total){
  * Check each line and return fewest button presses needed
  * return -1 on error
  */
-int check_machine(const char* line);
+int check_machine(const char* line){
+    char *ptr = (char*)line;
+    // parse diagram
+    uint16_t target = convert_diagram(ptr);
+    uint16_t buttons[20] = {0};
+    int button_count = 0;
+    if(target == 0) return -1;
+    while (strchr(ptr, '(') != NULL) {
+        ptr = strchr(ptr, '(') + 1;
+        uint16_t button = convert_buttons(ptr);
+        buttons[button_count] = button;
+        button_count++;
+    }
+    // find fewest presses
+    return 0;
+}
 
 uint16_t convert_diagram(char* diagram);
 uint16_t convert_buttons(char* buttons);
