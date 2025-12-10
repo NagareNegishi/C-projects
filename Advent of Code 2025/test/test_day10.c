@@ -24,12 +24,12 @@ void test_check_machine(const char* line, const int expected){
 TEST_CASE("[.##.]", 0b0110)
 TEST_CASE("[...#.]", 0b00010)
 TEST_CASE("[.###.#]", 0b011101)
-void test_convert_diagram(const char* diagram, const uint16_t expected){
+void test_convert_diagram(char* diagram, const uint16_t expected){
     TEST_ASSERT_EQUAL(expected, convert_diagram(diagram));
 }
 
 TEST_CASE("(3)", 0b1000)
 TEST_CASE("(0,2,3,4)", 0b11101)
-void test_convert_buttons(const char* buttons, const uint16_t expected){
+void test_convert_buttons(char* buttons, const uint16_t expected){
     TEST_ASSERT_EQUAL(expected, convert_buttons(buttons));
 }
