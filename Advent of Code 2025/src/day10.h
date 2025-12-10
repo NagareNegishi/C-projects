@@ -22,8 +22,13 @@ int check_machine(const char* line);
 uint16_t convert_diagram(char* diagram);
 uint16_t convert_buttons(char* buttons);
 
-int find_min_presses(uint16_t target, uint16_t* buttons, int button_count);
-bool can_reach_in_n_presses(uint16_t current, uint16_t target, uint16_t* buttons, int button_count, int n, int depth);
+// int find_min_presses(uint16_t target, uint16_t* buttons, int button_count);
+// bool can_reach_in_n_presses(uint16_t current, uint16_t target, uint16_t* buttons, int button_count, int n, int depth);
 
+
+
+int find_min_presses(uint16_t target, uint16_t* buttons, int button_count);
+
+bool can_reach_in_n_presses(uint16_t current, uint16_t target, uint16_t* buttons, int button_count, int n, int depth);
 
 #endif // DAY10_H

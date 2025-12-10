@@ -44,3 +44,4 @@ void test_convert_buttons(){//char* buttons, const uint16_t expected){
     TEST_ASSERT_EQUAL(0b1000, convert_buttons("(3)"));
     TEST_ASSERT_EQUAL(0b11101, convert_buttons("(0,2,3,4)"));
 }
+
