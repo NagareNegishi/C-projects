@@ -34,7 +34,7 @@ void test_convert_diagram(){//(char* diagram, const uint16_t expected){
     // TEST_ASSERT_EQUAL(expected, convert_diagram(diagram));
     TEST_ASSERT_EQUAL(0b0110, convert_diagram("[.##.]"));
     TEST_ASSERT_EQUAL(0b00010, convert_diagram("[...#.]"));
-    TEST_ASSERT_EQUAL(0b101110, convert_diagram("[.###.#]"));
+    TEST_ASSERT_EQUAL(0b011101, convert_diagram("[.###.#]"));
 }
 
 // TEST_CASE("(3)", 0b1000)
