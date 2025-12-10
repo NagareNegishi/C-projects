@@ -1,6 +1,7 @@
 #ifndef DAY10_H
 #define DAY10_H
 #include <stdint.h>
+#include <stdbool.h>
 
 /**
  * [.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
@@ -20,5 +21,9 @@ int check_machine(const char* line);
 
 uint16_t convert_diagram(char* diagram);
 uint16_t convert_buttons(char* buttons);
+
+int find_min_presses(uint16_t target, uint16_t* buttons, int button_count);
+bool can_reach_in_n_presses(uint16_t current, uint16_t target, uint16_t* buttons, int button_count, int n, int depth);
+
 
 #endif // DAY10_H
