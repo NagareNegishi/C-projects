@@ -41,7 +41,24 @@ int check_machine(const char* line){
     return 0;
 }
 
-uint16_t convert_diagram(char* diagram);
-uint16_t convert_buttons(char* buttons);
+uint16_t convert_diagram(char* diagram){
+    printf("Converting diagram: %s\n", diagram);
+    uint16_t result = 0;
+    while (*diagram != ']') {
+        printf("Char: %c\n", *diagram);
+        result <<= 1;
+        if (*diagram == '#') {
+            result |= 1;
+        } else if (*diagram != '.') {
+            return 0; // invalid character
+        }
+        diagram++;
+    }
+    return result;
+}
+
+uint16_t convert_buttons(char* buttons){
+    return 0;
+}
 
 

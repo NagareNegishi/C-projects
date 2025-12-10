@@ -1,6 +1,8 @@
 #include "unity.h"
 #include "day10.h"
+#include "fff.h"
 
+#define TEST_CASE(...)
 
 void test_get_fewest_button_presses(){
     long long total;
@@ -13,23 +15,32 @@ void test_get_fewest_button_presses(){
     TEST_ASSERT_EQUAL(0, total);
 }
 
-TEST_CASE("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}\n", 2)
-TEST_CASE("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}\n", 3)
-TEST_CASE("[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}\n", 7)
-void test_check_machine(const char* line, const int expected){
-    TEST_ASSERT_EQUAL(3, check_machine(line));
+// TEST_CASE("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}\n", 2)
+// TEST_CASE("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}\n", 3)
+// TEST_CASE("[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}\n", 7)
+void test_check_machine(){//const char* line, const int expected){
+    // TEST_ASSERT_EQUAL(3, check_machine(line));
+    // TEST_ASSERT_EQUAL(-1, check_machine("invalid input\n"));
+    TEST_ASSERT_EQUAL(2, check_machine("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}\n"));
+    TEST_ASSERT_EQUAL(3, check_machine("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}\n"));
+    TEST_ASSERT_EQUAL(2, check_machine("[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}\n"));
     TEST_ASSERT_EQUAL(-1, check_machine("invalid input\n"));
 }
 
-TEST_CASE("[.##.]", 0b0110)
-TEST_CASE("[...#.]", 0b00010)
-TEST_CASE("[.###.#]", 0b011101)
-void test_convert_diagram(char* diagram, const uint16_t expected){
-    TEST_ASSERT_EQUAL(expected, convert_diagram(diagram));
+// TEST_CASE("[.##.]", 0b0110)
+// TEST_CASE("[...#.]", 0b00010)
+// TEST_CASE("[.###.#]", 0b011101)
+void test_convert_diagram(){//(char* diagram, const uint16_t expected){
+    // TEST_ASSERT_EQUAL(expected, convert_diagram(diagram));
+    TEST_ASSERT_EQUAL(0b0110, convert_diagram("[.##.]"));
+    TEST_ASSERT_EQUAL(0b00010, convert_diagram("[...#.]"));
+    TEST_ASSERT_EQUAL(0b101110, convert_diagram("[.###.#]"));
 }
 
-TEST_CASE("(3)", 0b1000)
-TEST_CASE("(0,2,3,4)", 0b11101)
-void test_convert_buttons(char* buttons, const uint16_t expected){
-    TEST_ASSERT_EQUAL(expected, convert_buttons(buttons));
+// TEST_CASE("(3)", 0b1000)
+// TEST_CASE("(0,2,3,4)", 0b11101)
+void test_convert_buttons(){//char* buttons, const uint16_t expected){
+    // TEST_ASSERT_EQUAL(expected, convert_buttons(buttons));
+    TEST_ASSERT_EQUAL(0b1000, convert_buttons("(3)"));
+    TEST_ASSERT_EQUAL(0b11101, convert_buttons("(0,2,3,4)"));
 }
