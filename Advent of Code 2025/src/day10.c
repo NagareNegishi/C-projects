@@ -6,14 +6,14 @@
 int get_fewest_button_presses(const char* filename, long long* total){
     *total = 0;
     FILE* in = fopen(filename, "r");
-    if (in == NULL) return -1;
+    if (in == NULL) return 1;
 
     char line[256];
     while (fgets(line, sizeof(line), in) != NULL) {
         int presses = check_machine(line);
         if (presses == -1) {
             fclose(in);
-            return -1;
+            return 1;
         }
         *total += presses;
     }
@@ -45,36 +45,6 @@ int check_machine(const char* line){
     return min_presses;
 }
 
-
-/**
- * toggle same button twice just cancels out, so I only need to consider pressing each button 0 or 1 times.
- */
-int find_min_presses(uint16_t target, uint16_t* buttons, int button_count) {
-    if (target == 0) return 0;
-    
-    for (int n = 1; n <= button_count; n++) {
-        if (can_reach_in_n_presses(0, target, buttons, button_count, n, 0)) { // initially all lights off = 0
-            return n;
-        }
-    }
-    return -1;
-}
-
-bool can_reach_in_n_presses(uint16_t current, uint16_t target, uint16_t* buttons, int button_count, int n, int depth) {
-    if (current == target) return true; // reached target
-    if (depth == n) return false; // reached max presses -> no solution found
-    // try pressing each button
-    for (int i = 0; i < button_count; i++) {
-        // current ^ buttons[i] toggles the lights corresponding to the button
-        if (can_reach_in_n_presses(current ^ buttons[i], target, buttons, button_count, n, depth + 1)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-
-
 uint16_t convert_diagram(char* diagram){
     uint16_t result = 0;
     diagram++; // skip initial '['
@@ -101,5 +71,55 @@ uint16_t convert_buttons(char* buttons){
     }
     return result;
 }
+
+#include <stdlib.h>
+
+typedef struct {
+    uint16_t state;
+    int presses;
+} QueueNode;
+
+int find_min_presses(uint16_t target, uint16_t* buttons, int button_count) {
+    if (target == 0) return 0;
+    
+    // BFS
+    QueueNode* queue = malloc(sizeof(QueueNode) * 100000);
+    bool* visited = calloc(65536, sizeof(bool));
+    
+    int front = 0, back = 0;
+    queue[back++] = (QueueNode){0, 0};
+    visited[0] = true;
+    
+    while (front < back) {
+        QueueNode current = queue[front++];
+        
+        for (int i = 0; i < button_count; i++) {
+            uint16_t new_state = current.state ^ buttons[i];
+            
+            if (new_state == target) {
+                int result = current.presses + 1;
+                free(queue);
+                free(visited);
+                return result;
+            }
+            
+            if (!visited[new_state]) {
+                visited[new_state] = true;
+                queue[back++] = (QueueNode){new_state, current.presses + 1};
+            }
+        }
+    }
+    
+    free(queue);
+    free(visited);
+    return -1;
+}
+
+
+
+
+
+
+
 
 
