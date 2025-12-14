@@ -20,7 +20,7 @@ int get_fewest_button_presses(const char* filename, long long* total);
 int check_machine(const char* line);
 
 uint16_t convert_diagram(char* diagram);
-uint16_t convert_buttons(char* buttons);
+uint16_t convert_buttons(char* buttons, int nums);
 
 int find_min_presses(uint16_t target, uint16_t* buttons, int button_count);
 
