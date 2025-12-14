@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "day10.h"
 
 int get_fewest_button_presses(const char* filename, long long* total){
@@ -20,7 +21,6 @@ int get_fewest_button_presses(const char* filename, long long* total){
     fclose(in);
     return 0;
 }
-
 
 /**
  * Check each line and return fewest button presses needed
@@ -55,7 +55,6 @@ int check_machine(const char* line){
 }
 
 
-
 uint16_t convert_diagram(char* diagram){
     uint16_t result = 0;
     diagram++; // skip initial '['
@@ -72,7 +71,6 @@ uint16_t convert_diagram(char* diagram){
 }
 
 
-
 uint16_t convert_buttons(char* buttons, int nums){
     uint16_t result = 0;
     while (*buttons != ')') {
@@ -87,7 +85,6 @@ uint16_t convert_buttons(char* buttons, int nums){
 }
 
 
-#include <stdlib.h>
 
 typedef struct {
     uint16_t state;
