@@ -21,29 +21,40 @@ int get_fewest_button_presses(const char* filename, long long* total){
     return 0;
 }
 
+
 /**
  * Check each line and return fewest button presses needed
  * return -1 on error
  */
 int check_machine(const char* line){
     char *ptr = (char*)line;
-    // parse diagram
+    // parse diagram and get number of lights
+    int num_lights = 0;
+    char *temp = ptr + 1;  // skip '['
+    while (*temp != ']') {
+        if (*temp != '.' && *temp != '#') return -1;
+        num_lights++;
+        temp++;
+    }
+    
     uint16_t target = convert_diagram(ptr);
     uint16_t buttons[20] = {0};
     int button_count = 0;
-    if(target == 0) return -1;
+    if(target == 0 && num_lights == 0) return -1;
+    
     while (strchr(ptr, '(') != NULL) {
         ptr = strchr(ptr, '(') + 1;
-        uint16_t button = convert_buttons(ptr);
+        uint16_t button = convert_buttons(ptr, num_lights);
         buttons[button_count] = button;
         button_count++;
     }
     
-    // find fewest presses
     int min_presses = find_min_presses(target, buttons, button_count);
     if (min_presses == -1) return -1;
     return min_presses;
 }
+
+
 
 uint16_t convert_diagram(char* diagram){
     uint16_t result = 0;
@@ -60,17 +71,21 @@ uint16_t convert_diagram(char* diagram){
     return result;
 }
 
-uint16_t convert_buttons(char* buttons){
+
+
+uint16_t convert_buttons(char* buttons, int nums){
     uint16_t result = 0;
     while (*buttons != ')') {
         if (*buttons >= '0' && *buttons <= '9') {
-            int index = *buttons - '0';
-            result |= (1 << index);
+            int light_index = *buttons - '0';  // Light index from left (0-based)
+            int bit_position = nums - 1 - light_index;  // Convert to bit position
+            result |= (1 << bit_position);
         }
         buttons++;
     }
     return result;
 }
+
 
 #include <stdlib.h>
 
@@ -114,12 +129,3 @@ int find_min_presses(uint16_t target, uint16_t* buttons, int button_count) {
     free(visited);
     return -1;
 }
-
-
-
-
-
-
-
-
-
