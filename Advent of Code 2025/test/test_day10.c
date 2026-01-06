@@ -6,8 +6,8 @@
 
 void test_get_fewest_button_presses(){
     long long total;
-    // int result = get_fewest_button_presses("test/day10.txt", &total);
-    int result = get_fewest_button_presses("src/input10.txt", &total);
+    int result = get_fewest_button_presses("test/day10.txt", &total);
+    // int result = get_fewest_button_presses("src/input10.txt", &total);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL(7, total);
     result = get_fewest_button_presses("fake.txt", &total);
