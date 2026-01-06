@@ -2,6 +2,7 @@
 #include "helper.h"
 #include "day2.h"
 
+
 void test_get_total_invalid_IDs(){
     long long total;
     // int result = get_total_invalid_IDs("test/day2.txt", &total);
