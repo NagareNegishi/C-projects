@@ -23,3 +23,9 @@ vendor/
 *.out
 *.so
 *.a
+
+# Coverity related files
+cov-int/
+*.tgz
+*.tar.gz
+*.zip
