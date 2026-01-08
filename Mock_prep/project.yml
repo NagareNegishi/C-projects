@@ -56,13 +56,14 @@
   :enabled:
     #- beep                           # beeps when finished, so you don't waste time waiting for ceedling
     - module_generator                # handy for quickly creating source, header, and test templates
-    #- gcov                           # test coverage using gcov. Requires gcc, gcov, and a coverage analyzer like gcovr
+    - gcov                           # test coverage using gcov. Requires gcc, gcov, and a coverage analyzer like gcovr
     #- bullseye                       # test coverage using bullseye. Requires bullseye for your platform
     #- command_hooks                  # write custom actions to be called at different points during the build process
     #- compile_commands_json_db       # generate a compile_commands.json file
     #- dependencies                   # automatically fetch 3rd party libraries, etc.
     #- subprojects                    # managing builds and test for static libraries
     #- fake_function_framework        # use FFF instead of CMock
+    - fff
 
     # Report options (You'll want to choose one stdout option, but may choose multiple stored options if desired)
     #- report_build_warnings_log
@@ -126,6 +127,18 @@
 
   # Enable to inject name of a test as a unique compilation symbol into its respective executable build. 
   :use_test_definition: FALSE 
+
+
+# # Configure additional command line flags provided to tools used in each build step
+# :flags:
+#   :test:
+#     :compile:
+#       '*':
+#         - -Wall  # Optional: enable warnings
+#     :link:
+#       '*':
+#         - -lm  # Required: link math library
+
 
 # Configure additional command line flags provided to tools used in each build step
 # :flags:
@@ -198,9 +211,22 @@
   :exclude_setjmp_h:  false        # Don't use setjmp when running CMock. Note that this might result in late reporting or out-of-order failures.
 
 # Configuration options specific to Unity. 
+# :unity:
+#   :defines:
+#     - UNITY_EXCLUDE_FLOAT
+
 :unity:
-  :defines:
-    - UNITY_EXCLUDE_FLOAT
+  :use_param_tests: true   # <— this tells Unity/Ceedling to handle param tests
+
+:defines:
+  :test: # Help the compiler accept my TEST_CASE lines.
+    - TEST
+    - UNITY_SUPPORT_TEST_CASES # <— this makes TEST_CASE macro available
+    - UNITY_INCLUDE_DOUBLE # <— this makes Unity support double type
+  :test_preprocess: # Help Ceedling understand my TEST_CASE lines.
+    - TEST
+    - UNITY_SUPPORT_TEST_CASES
+
 
 # You can optionally have ceedling create environment variables for you before
 # performing the rest of its tasks.
@@ -221,7 +247,9 @@
   :placement: :end
   :flag: "-l${1}"
   :path_flag: "-L ${1}"
-  :system: []    # for example, you might list 'm' to grab the math library
+  # for example, you might list 'm' to grab the math library
+  :system:
+    - m
   :test: []
   :release: []
 
@@ -338,6 +366,17 @@
 ################################################################
 # TOOLCHAIN CONFIGURATION
 ################################################################
+
+
+
+:tools:
+  :test_linker:
+    :executable: gcc
+    :arguments:
+      - ${1}
+      - -o ${2}
+      - -lm
+
 
 #:tools:
 # Ceedling defaults to using gcc for compiling, linking, etc.
