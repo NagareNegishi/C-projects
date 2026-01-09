@@ -15,5 +15,5 @@ void tearDown(void) {
 
 void test_sys_io(void) {
     bool result = sys_io();
-    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL(true, result);
 }

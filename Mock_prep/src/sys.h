@@ -6,5 +6,5 @@
  * use ifreq structure and socket to get some information about network interfaces.
  * use some logging mechanism to log errors.
  */
-bool sys_io();
+bool sys_io(void);
 #endif
