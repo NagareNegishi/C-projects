@@ -22,6 +22,11 @@ FAKE_VALUE_FUNC(int, socket, int, int, int);
 FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
 
+// custom fake which always populates ifreq structure with valid data
+int ioctl_fake_impl(int fd, unsigned long request, ...) {
+
+}
+
 void setUp(void) {
     // This is run before EACH TEST
 }
@@ -31,6 +36,8 @@ void tearDown(void) {
 
 void test_sys_io(void) {
     socket_fake.return_val = 3; // mock socket to return valid fd
+    ioctl_fake.custom_fake = ioctl_fake_impl; // use custom fake implementation
+    
     bool result = sys_io();
     TEST_ASSERT_EQUAL(true, result);
 }
