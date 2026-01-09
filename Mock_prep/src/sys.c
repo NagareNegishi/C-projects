@@ -3,12 +3,12 @@
 
 #include <string.h>
 #include <unistd.h>        // for close
-#include <sys/ioctl.h>    // General ioctl stuff
+#include <sys/ioctl.h>    // General ioctl stuff https://linux.die.net/man/7/netdevice
 #include <net/if.h>        // Network interface commands (SIOCGIFADDR, etc.)
 #include <linux/fs.h>      // Filesystem commands
 #include <termios.h>       // Terminal commands
 
-// for in_addr printing
+// for in_addr printing https://linux.die.net/man/3/inet_ntoa
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
