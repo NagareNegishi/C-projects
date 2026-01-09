@@ -26,18 +26,25 @@ FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 // custom fake which always populates ifreq structure with valid data
 static int ioctl_fake_impl(int fd, unsigned long request, ...) {
     if (request == SIOCGIFADDR){ // match this with src
+        printf("SIOCGIFADDR matched!\n");
 
         va_list args; // handle variable arguments
         va_start(args, request); // request is last fixed argument
 
         // function pass &ifr as 3rd argument -> since ifr is struct, it is passed as pointer
         struct ifreq* ifr = va_arg(args, struct ifreq*);
+        printf("ifr pointer: %p\n", (void*)ifr);
 
         if (ifr == NULL) {
             printf("ioctl_fake_impl: ifr is NULL\n");
             va_end(args);
             return -1; // error
         }
+
+        // we want ifr to always have valid IP address
+        struct sockaddr_in* ipaddr = (struct sockaddr_in*)&ifr->ifr_addr; // ifr_addr is sockaddr type, so need to cast
+        ipaddr->sin_family = AF_INET;
+        ipaddr->sin_addr.s_addr = inet_addr("127.0.0.1"); // assign some valid IP address (localhost in this case)
         
         // clean up
         va_end(args);
