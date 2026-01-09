@@ -7,6 +7,11 @@
 #include <net/if.h>        // Network interface commands (SIOCGIFADDR, etc.)
 #include <linux/fs.h>      // Filesystem commands
 #include <termios.h>       // Terminal commands
+
+// for in_addr printing
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 // add some logging later
 
 int sys_io() {
@@ -30,6 +35,8 @@ int sys_io() {
 
     // if we reach here, everything is fine, print for now
     printf("ioctl SIOCGIFADDR succeeded.\n");
+    struct sockaddr_in* ipaddr = (struct sockaddr_in*)&ifr.ifr_addr;
+    printf("IP Address: %s\n", inet_ntoa(ipaddr->sin_addr));
     close(sock);
 
 
