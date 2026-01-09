@@ -38,10 +38,15 @@ void tearDown(void) {
     // This is run after EACH TEST
 }
 
-void test_sys_io(void) {
-    socket_fake.return_val = 3; // mock socket to return valid fd
+#include <stdbool.h>
+
+// TEST_CASE(1, true)
+// TEST_CASE(0, false)
+TEST_CASE(-1, false)
+void test_sys_io(int socket_return, bool expected) {
+    socket_fake.return_val = socket_return; // mock socket to return valid fd
     ioctl_fake.custom_fake = ioctl_fake_impl; // use custom fake implementation
 
     bool result = sys_io();
-    TEST_ASSERT_EQUAL(true, result);
+    TEST_ASSERT_EQUAL(expected, result);
 }
