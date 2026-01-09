@@ -14,7 +14,7 @@
 #include <arpa/inet.h>
 // add some logging later
 
-int sys_io() {
+bool sys_io() {
     // Placeholder implementation
     printf("sys_io function called.\n");
 
