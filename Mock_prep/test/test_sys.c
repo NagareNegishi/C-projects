@@ -19,7 +19,7 @@
 
 // Declare fakes for the functions we need to control
 FAKE_VALUE_FUNC(int, socket, int, int, int);
-// FAKE_VALUE_FUNC(int, ioctl, int, unsigned long, void*);
+FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
 
 void setUp(void) {
