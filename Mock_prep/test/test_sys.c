@@ -13,9 +13,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-// fff plugin is used
-// #include "fff.h"
-// DEFINE_FFF_GLOBALS;
+
+#include "fff.h"
+// DEFINE_FFF_GLOBALS; // fff plugin is used
 
 // Declare fakes for the functions we need to control
 FAKE_VALUE_FUNC(int, socket, int, int, int);
@@ -30,6 +30,7 @@ void tearDown(void) {
 }
 
 void test_sys_io(void) {
+    socket_fake.return_val = 3; // mock socket to return valid fd
     bool result = sys_io();
     TEST_ASSERT_EQUAL(true, result);
 }
