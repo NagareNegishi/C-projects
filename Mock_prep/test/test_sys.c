@@ -27,6 +27,20 @@ FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 static int ioctl_fake_impl(int fd, unsigned long request, ...) {
     if (request == SIOCGIFADDR){ // match this with src
 
+        va_list args; // handle variable arguments
+        va_start(args, request); // request is last fixed argument
+
+        // function pass &ifr as 3rd argument -> since ifr is struct, it is passed as pointer
+        struct ifreq* ifr = va_arg(args, struct ifreq*);
+
+        if (ifr == NULL) {
+            printf("ioctl_fake_impl: ifr is NULL\n");
+            va_end(args);
+            return -1; // error
+        }
+        
+        // clean up
+        va_end(args);
     }
     return 0;
 }
@@ -41,7 +55,7 @@ void tearDown(void) {
 #include <stdbool.h>
 
 // TEST_CASE(1, true)
-// TEST_CASE(0, false)
+TEST_CASE(0, true) // 0 is valid socket fd
 TEST_CASE(-1, false)
 void test_sys_io(int socket_return, bool expected) {
     socket_fake.return_val = socket_return; // mock socket to return valid fd
