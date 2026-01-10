@@ -34,6 +34,7 @@
 
 // Declare fakes for the functions we need to control
 FAKE_VALUE_FUNC(int, socket, int, int, int);
+FAKE_VALUE_FUNC(int, close, int);
 FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
 
@@ -98,6 +99,7 @@ TEST_CASE(1, true)
 TEST_CASE(-1, false)
 void test_sys_io(int socket_return, bool expected) {
     socket_fake.return_val = socket_return; // mock socket to return valid fd
+    close_fake.return_val = 0; // close should succeed
     ioctl_fake.custom_fake = ioctl_fake_impl; // use custom fake implementation
 
     bool result = sys_io();
