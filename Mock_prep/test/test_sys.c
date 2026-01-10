@@ -37,7 +37,7 @@ FAKE_VALUE_FUNC(int, socket, int, int, int);
 FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
 
-#include <stdarg.h> // need to mandle ...
+#include <stdarg.h> // need to handle ...
 // custom fake which always populates ifreq structure with valid data
 // static int ioctl_fake_impl(int fd, unsigned long request, ...) {
 //     if (request == SIOCGIFADDR){ // match this with src
@@ -82,6 +82,10 @@ static int ioctl_fake_impl(int fd, unsigned long request, va_list args) {
 
 void setUp(void) {
     // This is run before EACH TEST
+    // Reset all fakes before each test to ensure clean state
+    RESET_FAKE(socket);
+    RESET_FAKE(ioctl);
+    FFF_RESET_HISTORY();
 }
 void tearDown(void) {
     // This is run after EACH TEST
@@ -89,7 +93,7 @@ void tearDown(void) {
 
 #include <stdbool.h>
 
-// TEST_CASE(1, true)
+TEST_CASE(1, true)
 // TEST_CASE(0, true) // 0 is valid socket fd
 TEST_CASE(-1, false)
 void test_sys_io(int socket_return, bool expected) {
