@@ -108,3 +108,37 @@ void test_sys_io(int socket_return, bool expected) {
     bool result = sys_io();
     TEST_ASSERT_EQUAL(expected, result);
 }
+
+
+/**
+ * NOTE:
+ * to make FAKE_VALUE_FUNC3_VARARG work, I patched FFF plugin in ceedling installation
+ * 1. DEFINE_FAKE_VALUE_FUNC3_VARARG was patched from:
+ *
+ * if (FUNCNAME##_fake.custom_fake) return FUNCNAME##_fake.custom_fake(arg0, arg1); \
+ *
+ * to:
+ *
+ * if (FUNCNAME##_fake.custom_fake) { \
+    va_list ap; \
+    va_start(ap, arg1); \
+    RETURN_TYPE ret = FUNCNAME##_fake.custom_fake(arg0, arg1, ap); \
+    va_end(ap); \
+    return ret; \
+    } \
+ *
+ * 2. DECLARE_FAKE_VALUE_FUNC3_VARARG was patched from:
+ *
+ * RETURN_TYPE(*custom_fake)(ARG0_TYPE arg0, ARG1_TYPE arg1); \
+ *
+ * to:
+ *
+ * RETURN_TYPE(*custom_fake)(ARG0_TYPE arg0, ARG1_TYPE arg1, va_list ap); \
+ *
+ * 3. finally, in fff.h, added #include <stdarg.h> to ensure va_list is defined
+ *
+ * After these patches, the test works as expected.
+ * However, these changes are local to my ceedling installation. and FAKE_VALUE_FUNC3_VARARG for 3 fixed arguments only.
+ * This is rather ceedling/FFF limitation, I expect ceedling to update FFF plugin to support this properly in future releases.
+ * if not, I need to modify what version of FFF plugin ceedling uses.
+ */
