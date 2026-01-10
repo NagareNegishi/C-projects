@@ -43,20 +43,40 @@ FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
 
 #include <stdarg.h> // need to handle ...
+
 // custom fake which always populates ifreq structure with valid data
+static int ioctl_fake_impl(int fd, unsigned long request, va_list args) {
+    if (request == SIOCGIFADDR) {
+        struct ifreq* ifr = va_arg(args, struct ifreq*);
+        
+        struct sockaddr_in* ipaddr = (struct sockaddr_in*)&ifr->ifr_addr;
+
+        if (ifr == NULL) {
+            va_end(args);
+            return -1; // error
+        }
+
+        ipaddr->sin_family = AF_INET;
+        ipaddr->sin_addr.s_addr = inet_addr("127.0.0.1");
+    }
+    return 0;
+}
+
+/**
+ * NOTE:
+ * Original implementation which takes ... as variable arguments
+ * but the way I patched FFF plugin, the custom fake must take va_list instead.
+ * and it should be what FFF does internally, if official documentation is to be believed.
+ */
 // static int ioctl_fake_impl(int fd, unsigned long request, ...) {
 //     if (request == SIOCGIFADDR){ // match this with src
-//         printf("SIOCGIFADDR matched!\n");
-
 //         va_list args; // handle variable arguments
 //         va_start(args, request); // request is last fixed argument
 
 //         // function pass &ifr as 3rd argument -> since ifr is struct, it is passed as pointer
 //         struct ifreq* ifr = va_arg(args, struct ifreq*);
-//         printf("ifr pointer: %p\n", (void*)ifr);
 
 //         if (ifr == NULL) {
-//             printf("ioctl_fake_impl: ifr is NULL\n");
 //             va_end(args);
 //             return -1; // error
 //         }
@@ -71,18 +91,6 @@ FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 //     }
 //     return 0;
 // }
-
-
-static int ioctl_fake_impl(int fd, ioctl_request_t request, va_list args) {
-    if (request == SIOCGIFADDR) {
-        struct ifreq* ifr = va_arg(args, struct ifreq*);
-        
-        struct sockaddr_in* ipaddr = (struct sockaddr_in*)&ifr->ifr_addr;
-        ipaddr->sin_family = AF_INET;
-        ipaddr->sin_addr.s_addr = inet_addr("127.0.0.1");
-    }
-    return 0;
-}
 
 
 void setUp(void) {
