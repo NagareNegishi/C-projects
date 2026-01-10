@@ -35,7 +35,9 @@
 // Declare fakes for the functions we need to control
 FAKE_VALUE_FUNC(int, socket, int, int, int);
 FAKE_VALUE_FUNC(int, close, int);
-FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
+
+typedef unsigned long ioctl_request_t;
+FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, ioctl_request_t, ...);
 
 
 #include <stdarg.h> // need to handle ...
@@ -69,7 +71,7 @@ FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 // }
 
 
-static int ioctl_fake_impl(int fd, unsigned long request, va_list args) {
+static int ioctl_fake_impl(int fd, ioctl_request_t request, va_list args) {
     if (request == SIOCGIFADDR) {
         struct ifreq* ifr = va_arg(args, struct ifreq*);
         
@@ -86,6 +88,7 @@ void setUp(void) {
     // Reset all fakes before each test to ensure clean state
     RESET_FAKE(socket);
     RESET_FAKE(ioctl);
+    RESET_FAKE(close);
     FFF_RESET_HISTORY();
 }
 void tearDown(void) {
@@ -95,7 +98,7 @@ void tearDown(void) {
 #include <stdbool.h>
 
 TEST_CASE(1, true)
-// TEST_CASE(0, true) // 0 is valid socket fd
+TEST_CASE(0, true) // 0 is valid socket fd
 TEST_CASE(-1, false)
 void test_sys_io(int socket_return, bool expected) {
     socket_fake.return_val = socket_return; // mock socket to return valid fd
