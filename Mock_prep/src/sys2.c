@@ -1,4 +1,4 @@
-#include "sys.h"
+#include "sys2.h"
 #include <stdio.h>
 
 #include <string.h>
@@ -41,7 +41,7 @@ bool sys_io(void) {
     }
 
     ipaddr = (struct sockaddr_in*)&ifr.ifr_addr;
-    if (!is_valid_ip_address(ipaddr, &ifr.ifr_addr)) {
+    if (!is_valid_ip(ipaddr, &ifr.ifr_addr)) {
         perror("Invalid IP address"); // replace with logging
         close(sock);
         return false;
@@ -52,6 +52,6 @@ bool sys_io(void) {
 }
 
 
-bool is_valid_ip_address(struct sockaddr_in* ipaddr, struct sockaddr* addr) {
+bool is_valid_ip(struct sockaddr_in* ipaddr, struct sockaddr* addr) {
     return ipaddr->sin_addr.s_addr != 0 && addr->sa_family == AF_INET;
 }
