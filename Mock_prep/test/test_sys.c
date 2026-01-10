@@ -12,13 +12,12 @@
  * 2. FAKE_VALUE_FUNC?_VARARG requires custom fake to take va_list
  */
 
-
 #include "unity.h"
 #include "sys.h"
 
 #include <string.h>
 #include <unistd.h>        // for close
-#include <sys/ioctl.h>    // General ioctl stuff https://linux.die.net/man/7/netdevice
+#include <sys/ioctl.h>     // General ioctl stuff https://linux.die.net/man/7/netdevice
 #include <net/if.h>        // Network interface commands (SIOCGIFADDR, etc.)
 #include <linux/fs.h>      // Filesystem commands
 #include <termios.h>       // Terminal commands
@@ -28,16 +27,19 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-
 #include "fff.h"
 // DEFINE_FFF_GLOBALS; // fff plugin is used
 
 // Declare fakes for the functions we need to control
 FAKE_VALUE_FUNC(int, socket, int, int, int);
 FAKE_VALUE_FUNC(int, close, int);
+FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, unsigned long, ...);
 
-typedef unsigned long ioctl_request_t;
-FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, ioctl_request_t, ...);
+// NOTE:
+// some documentation suggests defining ioctl type, as FFF may take "unsigned long" as "unsigned" and "long"
+// However, it seems unnecessary here as the test works without it.
+// typedef unsigned long ioctl_request_t;
+// FAKE_VALUE_FUNC3_VARARG(int, ioctl, int, ioctl_request_t, ...);
 
 
 #include <stdarg.h> // need to handle ...
